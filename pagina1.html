@@ -1,0 +1,3043 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="artifact-type" content="tool">
+  <meta name="design-style" content="carbon">
+  <title>Saneamiento IA + BIM · Suite de Demostración en Vivo</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=oHNs02q93vtZQdhY1kLw-7KQtfPLyWkCViYny92UzmrMm_VhKealy25UyQcfNPtuwCdWZEENeQjmgbC57KPcosP1Wpn0RAA5AQEYZ7Cw5PTsJ4n86HYJmzhVPFahe5B-zbS3feAg3ZtbABRSFkYQzfIwTmSljrpgPYPETIzY7vERTXgJpm35eGB5OzSYzSDRQnLur0qSWtoegRtZDZZ4LyRdVkjRQkt0F62N8h6F02rVFpLYm9lQjeHlLG143rEP69WTuoTozvt5jE4kAu122pFqLCsK1tK_7FUnG7dRKRyH1swAnGp4OQtEmjx47iMkrQSMeictFGD5L9_RTxyJVxROoHrxtFPpIW6VVORSJrszfNmE9UdWIn_dLQPhT1LH" charset="UTF-8"></script><script src="https://unpkg.com/lucide@1.43.0/dist/umd/lucide.min.js"></script>
+  <style>
+    :root {
+      color-scheme: light;
+
+      /* Page and surfaces (Carbon) */
+      --background: #ffffff;
+      --surface-container-low: #f4f4f4;
+      --surface-container: #f4f4f4;
+      --surface-container-high: #e0e0e0;
+
+      /* Ink */
+      --on-surface: #161616;
+      --on-surface-variant: #525252;
+
+      /* Rules */
+      --outline: #8d8d8d;
+      --outline-variant: #e0e0e0;
+
+      /* Accents */
+      --primary: #0f62fe;
+      --on-primary: #ffffff;
+      --primary-container: #d0e2ff;
+      --on-primary-container: #161616;
+      --primary-hover: #0353e9;
+      --secondary: #6f6f6f;
+      --tertiary: #198038;
+      --error: #da1e28;
+      --on-error: #ffffff;
+
+      /* Data series */
+      --data-1: #0f62fe;
+      --data-2: #6929c4;
+      --data-3: #005d5d;
+      --data-4: #9f1853;
+      --data-context: #8d8d8d;
+
+      /* Fonts */
+      --font-headline: 'IBM Plex Sans', sans-serif;
+      --font-body: 'IBM Plex Sans', sans-serif;
+      --font-label: 'IBM Plex Mono', monospace;
+
+      /* Shape */
+      --rounded: 0.125rem;
+      --rounded-lg: 0.25rem;
+      --rounded-full: 0.75rem;
+
+      /* Style effects */
+      --shadow-1: 0 2px 6px rgb(0 0 0 / 0.1);
+      --shadow-2: 0 4px 12px rgb(0 0 0 / 0.12);
+      --rule: 1px solid var(--outline-variant);
+      --field-rule: 1px solid var(--outline);
+      --indicator: 2px solid var(--primary);
+
+      /* Shared Semantic & Focus Tokens */
+      --positive: #198038;
+      --positive-container: #defbe6;
+      --warning: #8a6300;
+      --warning-container: #fcf4d6;
+      --error-container: #fff1f1;
+      --focus: var(--primary);
+
+      /* Type scale (Focused Tool / Dashboard) */
+      --display-size:  clamp(1.75rem, 1.4rem + 1.2vw, 2.25rem);
+      --headline-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+      --subhead-size:  clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+      --body-size:     clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
+      --label-size:    0.75rem;
+
+      /* Spacing scale (4pt base) */
+      --space-xs: 0.25rem;  --space-sm: 0.5rem;
+      --space-md: 1rem;     --space-lg: 1.5rem;
+      --space-xl: 2.5rem;   --space-2xl: 4rem;
+      --space-3xl: 6rem;
+
+      /* Motion */
+      --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+      --dur-micro: 120ms;  --dur-short: 220ms;  --dur-long: 420ms;
+    }
+
+    /* Base reset */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      overflow-x: clip;
+      margin: 0;
+      padding: 0;
+      background-color: var(--background);
+      color: var(--on-surface);
+      font-family: var(--font-body);
+      font-size: var(--body-size);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    header { position: static !important; }
+    button, input, select, textarea { font-family: inherit; }
+
+    .page-grid {
+      display: grid;
+      gap: var(--space-lg);
+      padding: var(--space-lg);
+      max-width: 1280px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    .page-grid * { min-width: 0; }
+
+    /* Focus rings */
+    :focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    /* Typography helpers */
+    .headline {
+      font-family: var(--font-headline);
+      font-weight: 300;
+      letter-spacing: 0;
+      line-height: 1.2;
+      margin: 0;
+      color: var(--on-surface);
+    }
+    .headline strong { font-weight: 600; }
+    .display-title { font-size: var(--display-size); }
+    .section-title { font-size: var(--headline-size); }
+    .subhead {
+      font-family: var(--font-headline);
+      font-weight: 600;
+      font-size: var(--subhead-size);
+      line-height: 1.25;
+      margin: 0;
+      color: var(--on-surface);
+    }
+    .label-mono {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--on-surface-variant);
+      display: block;
+    }
+    .helper-text {
+      font-size: 0.8125rem;
+      color: var(--on-surface-variant);
+      margin: 0;
+      line-height: 1.45;
+    }
+    .mono-num {
+      font-family: var(--font-label);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Carbon Layers */
+    .layer {
+      background: var(--surface-container);
+      border-radius: 0;
+      padding: var(--space-md);
+    }
+    .layer .layer {
+      background: var(--surface-container-high);
+    }
+    .layer-bordered {
+      background: var(--background);
+      border: var(--rule);
+      padding: var(--space-md);
+    }
+
+    /* Header Bar */
+    .app-header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: var(--space-md) var(--space-xl);
+      align-items: end;
+      border-bottom: var(--rule);
+      padding-bottom: var(--space-md);
+    }
+    .header-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      align-items: center;
+      margin-bottom: var(--space-xs);
+    }
+    .header-lede {
+      margin: var(--space-xs) 0 0 0;
+      color: var(--on-surface-variant);
+      max-width: 65ch;
+      font-size: 0.9375rem;
+    }
+    .demo-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      align-items: end;
+    }
+    .timer-box {
+      background: var(--surface-container);
+      padding: var(--space-xs) var(--space-md);
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      min-height: 44px;
+      border-left: 2px solid var(--primary);
+    }
+    .timer-readout {
+      font-family: var(--font-label);
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: var(--on-surface);
+      min-width: 5ch;
+    }
+
+    /* Buttons (Carbon: square corners, left-aligned label, solid primary / 1px secondary / ghost) */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: var(--space-sm);
+      min-height: 44px;
+      padding: var(--space-sm) var(--space-lg) var(--space-sm) var(--space-md);
+      border-radius: 0;
+      font-size: 0.875rem;
+      font-weight: 400;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out), border-color var(--dur-micro) var(--ease-out);
+      text-align: left;
+      white-space: nowrap;
+    }
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--on-primary);
+    }
+    .btn-primary:hover:not(:disabled) {
+      background-color: var(--primary-hover);
+    }
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+    .btn-secondary:hover:not(:disabled) {
+      background-color: var(--primary-container);
+      color: var(--on-primary-container);
+    }
+    .btn-ghost {
+      background-color: transparent;
+      color: var(--primary);
+      padding: var(--space-sm) var(--space-md);
+    }
+    .btn-ghost:hover:not(:disabled) {
+      background-color: var(--surface-container);
+    }
+    .btn-danger-ghost {
+      background-color: transparent;
+      color: var(--error);
+      border-color: var(--error);
+      padding: var(--space-sm) var(--space-md);
+    }
+    .btn-danger-ghost:hover:not(:disabled) {
+      background-color: var(--error-container);
+    }
+    .btn-compact {
+      min-height: 44px;
+      padding: var(--space-xs) var(--space-md);
+    }
+
+    /* Tags (only element using --rounded-full) */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      height: 24px;
+      padding: 0 var(--space-sm);
+      border-radius: var(--rounded-full);
+      font-size: 0.75rem;
+      font-weight: 500;
+      font-family: var(--font-label);
+      white-space: nowrap;
+    }
+    .tag-blue {
+      background-color: var(--primary-container);
+      color: var(--on-primary-container);
+    }
+    .tag-ok {
+      background-color: var(--positive-container);
+      color: var(--positive);
+    }
+    .tag-warn {
+      background-color: var(--warning-container);
+      color: var(--warning);
+    }
+    .tag-err {
+      background-color: var(--error-container);
+      color: var(--error);
+    }
+    .tag-neutral {
+      background-color: var(--surface-container-high);
+      color: var(--on-surface);
+    }
+
+    /* Primary Module Tabs */
+    .module-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+      border-bottom: var(--rule);
+    }
+    .module-tab {
+      background: transparent;
+      border: 0;
+      border-bottom: 2px solid transparent;
+      padding: var(--space-sm) var(--space-md) var(--space-sm) 0;
+      min-height: 44px;
+      cursor: pointer;
+      font-size: 0.9375rem;
+      font-weight: 400;
+      color: var(--on-surface-variant);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      transition: color var(--dur-micro) var(--ease-out), border-color var(--dur-micro) var(--ease-out);
+      margin-bottom: -1px;
+    }
+    .module-tab:hover {
+      color: var(--on-surface);
+    }
+    .module-tab.is-active {
+      color: var(--on-surface);
+      font-weight: 600;
+      border-bottom: var(--indicator);
+    }
+    .tab-index {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      color: var(--primary);
+    }
+
+    /* Sub-tabs / Segmented Control inside Module 1 */
+    .sub-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      border-bottom: var(--rule);
+      margin-bottom: var(--space-md);
+    }
+    .sub-tab {
+      background: var(--surface-container);
+      border: 0;
+      border-bottom: 2px solid transparent;
+      padding: var(--space-sm) var(--space-md);
+      min-height: 44px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 400;
+      color: var(--on-surface-variant);
+      transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out);
+    }
+    .sub-tab:hover {
+      background: var(--surface-container-high);
+      color: var(--on-surface);
+    }
+    .sub-tab.is-active {
+      background: var(--background);
+      color: var(--on-surface);
+      font-weight: 600;
+      border-bottom: var(--indicator);
+    }
+
+    /* Module Panels */
+    .module-panel {
+      display: none;
+    }
+    .module-panel.is-active {
+      display: grid;
+      gap: var(--space-lg);
+      animation: panelFade var(--dur-short) var(--ease-out);
+    }
+    @keyframes panelFade {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Asymmetric 2-column engineering layout */
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 4.4fr) minmax(0, 7.6fr);
+      gap: var(--space-lg);
+      align-items: start;
+    }
+    .controls-col {
+      display: grid;
+      gap: var(--space-md);
+    }
+    .results-col {
+      display: grid;
+      gap: var(--space-md);
+    }
+
+    /* Preset Strip */
+    .preset-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+    }
+    .preset-btn {
+      min-height: 44px;
+      padding: var(--space-xs) var(--space-md);
+      background: var(--background);
+      border: 1px solid var(--outline-variant);
+      color: var(--on-surface);
+      font-size: 0.8125rem;
+      cursor: pointer;
+      text-align: left;
+      transition: background-color var(--dur-micro) var(--ease-out), border-color var(--dur-micro) var(--ease-out);
+    }
+    .preset-btn:hover {
+      background: var(--surface-container-high);
+    }
+    .preset-btn.is-active {
+      border-color: var(--primary);
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+      font-weight: 600;
+    }
+
+    /* Form Controls (Carbon: 40px+ height, bottom field-rule, always-visible label above) */
+    .field-group {
+      display: grid;
+      gap: var(--space-xs);
+    }
+    .field-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: var(--space-sm);
+    }
+    .field-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--on-surface-variant);
+    }
+    .field-unit {
+      font-family: var(--font-label);
+      font-size: 0.75rem;
+      color: var(--on-surface-variant);
+    }
+    .dual-input {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 92px;
+      gap: var(--space-sm);
+      align-items: end;
+    }
+    .input-box, .select-box {
+      width: 100%;
+      min-height: 44px;
+      background: var(--background);
+      border: 0;
+      border-bottom: var(--field-rule);
+      border-radius: var(--rounded);
+      padding: 0 var(--space-md);
+      font-size: 0.9375rem;
+      color: var(--on-surface);
+    }
+    .input-box.mono-num {
+      text-align: right;
+      padding: 0 var(--space-sm);
+    }
+    .select-box {
+      padding-right: var(--space-xl);
+      cursor: pointer;
+    }
+    .input-box:focus, .select-box:focus {
+      outline: 2px solid var(--focus);
+      outline-offset: -2px;
+    }
+    .range-slider {
+      width: 100%;
+      min-height: 44px;
+      accent-color: var(--primary);
+      cursor: pointer;
+      margin: 0;
+    }
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-md);
+      align-items: end;
+    }
+
+    /* KPI Tile Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(170px, 100%), 1fr));
+      gap: var(--space-sm);
+    }
+    .kpi-tile {
+      background: var(--surface-container);
+      padding: var(--space-md);
+      display: grid;
+      gap: var(--space-xs);
+      align-content: start;
+    }
+    .kpi-tile.key-tile {
+      border-bottom: var(--indicator);
+    }
+    .kpi-value {
+      font-family: var(--font-label);
+      font-weight: 300;
+      font-size: 1.75rem;
+      line-height: 1.15;
+      color: var(--on-surface);
+      font-variant-numeric: tabular-nums;
+    }
+    .kpi-value.is-ok { color: var(--positive); }
+    .kpi-value.is-warn { color: var(--warning); }
+    .kpi-value.is-err { color: var(--error); }
+
+    /* Notifications / AI Insights (Carbon: gray 10 strip with 3px left bar in state color) */
+    .notice {
+      background: var(--surface-container);
+      padding: var(--space-md);
+      border-left: 3px solid var(--primary);
+      display: grid;
+      gap: var(--space-sm);
+    }
+    .notice.is-ok { border-left-color: var(--positive); }
+    .notice.is-warn { border-left-color: var(--warning); }
+    .notice.is-err { border-left-color: var(--error); }
+    .notice-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+    }
+    .notice-title {
+      font-weight: 600;
+      font-size: 0.9375rem;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    /* SVG Diagram Containers (explicit min-height per defensive JS) */
+    .viz-frame {
+      background: var(--background);
+      border: var(--rule);
+      padding: var(--space-md);
+      display: grid;
+      gap: var(--space-sm);
+    }
+    .viz-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      border-bottom: var(--rule);
+      padding-bottom: var(--space-sm);
+    }
+    .viz-canvas {
+      width: 100%;
+      min-height: 290px;
+      display: block;
+    }
+    .viz-canvas-tall {
+      width: 100%;
+      min-height: 340px;
+      display: block;
+    }
+    .viz-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+      font-family: var(--font-label);
+      font-size: 0.75rem;
+      color: var(--on-surface-variant);
+    }
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+    .legend-swatch {
+      width: 10px;
+      height: 10px;
+      display: inline-block;
+    }
+
+    /* Normative Check List */
+    .check-list {
+      display: grid;
+      gap: 0;
+    }
+    .check-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-md);
+      padding: var(--space-sm) 0;
+      border-top: var(--rule);
+    }
+    .check-item:first-child { border-top: 0; }
+
+    /* Tables (Carbon: zebra gray 10, gray 20 header, no vertical lines, mono right-aligned numbers) */
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      border: var(--rule);
+    }
+    table.carbon-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+    table.carbon-table thead th {
+      background: var(--surface-container-high);
+      color: var(--on-surface);
+      font-family: var(--font-label);
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      text-align: left;
+      padding: var(--space-sm) var(--space-md);
+      border-bottom: var(--rule);
+      white-space: nowrap;
+    }
+    table.carbon-table tbody td {
+      padding: var(--space-sm) var(--space-md);
+      border-bottom: var(--rule);
+      vertical-align: middle;
+    }
+    table.carbon-table tbody tr:nth-child(even) {
+      background: var(--surface-container);
+    }
+    table.carbon-table tbody tr.clickable-row {
+      cursor: pointer;
+    }
+    table.carbon-table tbody tr.clickable-row:hover {
+      background: var(--surface-container-high);
+    }
+    table.carbon-table tbody tr.is-selected {
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+    }
+    .num-col {
+      text-align: right;
+      font-family: var(--font-label);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* CWIS Pillar Bars */
+    .pillar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(210px, 100%), 1fr));
+      gap: var(--space-sm);
+    }
+    .pillar-card {
+      background: var(--surface-container);
+      padding: var(--space-sm) var(--space-md);
+      display: grid;
+      gap: var(--space-xs);
+    }
+    .meter-track {
+      height: 6px;
+      background: var(--surface-container-high);
+      width: 100%;
+    }
+    .meter-fill {
+      height: 100%;
+      background: var(--primary);
+      transition: width var(--dur-short) var(--ease-out);
+    }
+    .meter-fill.is-ok { background: var(--positive); }
+    .meter-fill.is-warn { background: var(--warning); }
+    .meter-fill.is-err { background: var(--error); }
+
+    /* Footer & Status Toast */
+    .app-footer {
+      border-top: var(--rule);
+      padding-top: var(--space-md);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+      color: var(--on-surface-variant);
+      font-size: 0.8125rem;
+    }
+    .inline-status {
+      font-family: var(--font-label);
+      font-size: 0.75rem;
+      color: var(--positive);
+      min-height: 1.25rem;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 960px) {
+      .workspace-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 640px) {
+      .page-grid {
+        padding: var(--space-md);
+        gap: var(--space-md);
+      }
+      .app-header {
+        grid-template-columns: 1fr;
+      }
+      .form-row-2 {
+        grid-template-columns: 1fr;
+      }
+      .dual-input {
+        grid-template-columns: minmax(0, 1fr) 80px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration:  0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior:     auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-grid">
+
+    <!-- HEADER -->
+    <header class="app-header">
+      <div>
+        <div class="header-meta">
+          <span class="label-mono">Ponencia Universitaria · Demostración 7 Min</span>
+          <span class="tag tag-blue">RNE OS.050 / OS.070 · SFD–CWIS · openBIM BCF</span>
+        </div>
+        <h1 class="headline display-title"><strong>IA y BIM</strong> en Proyectos de Agua y Saneamiento</h1>
+        <p class="header-lede">Prototipo interactivo de verificación hidráulica asistida, balance territorial de excretas y auditoría de interferencias multidisciplinarias para proyección en vivo.</p>
+      </div>
+
+      <div class="demo-toolbar">
+        <div class="timer-box" aria-label="Temporizador de demostración de 7 minutos">
+          <div>
+            <span class="label-mono">Guía 7 min</span>
+            <span id="demo-phase-label" class="helper-text">Bloque 1 · Hidráulica</span>
+          </div>
+          <span id="timer-display" class="timer-readout">07:00</span>
+          <button type="button" class="btn btn-ghost btn-compact" id="btn-timer-toggle" onclick="toggleDemoTimer()">Iniciar</button>
+          <button type="button" class="btn btn-ghost btn-compact" onclick="resetDemoTimer()" title="Reiniciar cronómetro">07:00</button>
+        </div>
+
+        <button type="button" class="btn btn-secondary btn-compact" onclick="exportSessionReport()">
+          <i data-lucide="download" aria-hidden="true" style="width:16px;height:16px;"></i>
+          Exportar reporte
+        </button>
+        <button type="button" class="btn btn-danger-ghost btn-compact" id="btn-reset-all" onclick="resetAllState(this)">
+          Restablecer
+        </button>
+      </div>
+    </header>
+
+    <div id="global-feedback" class="inline-status" role="status" aria-live="polite"></div>
+
+    <!-- PRIMARY MODULE TABS -->
+    <nav class="module-tabs" aria-label="Módulos de la demostración">
+      <button type="button" class="module-tab is-active" id="tab-btn-1" onclick="switchModule(1)">
+        <span class="tab-index">01</span> Verificación Hidráulica IA (OS.050 / OS.070)
+      </button>
+      <button type="button" class="module-tab" id="tab-btn-2" onclick="switchModule(2)">
+        <span class="tab-index">02</span> Diagnóstico SFD y Saneamiento CWIS
+      </button>
+      <button type="button" class="module-tab" id="tab-btn-3" onclick="switchModule(3)">
+        <span class="tab-index">03</span> Auditoría BIM e Interferencias BCF
+      </button>
+    </nav>
+
+    <!-- ===================================================================== -->
+    <!-- MÓDULO 1: VERIFICACIÓN HIDRÁULICA NORMATIVA ASISTIDA POR IA           -->
+    <!-- ===================================================================== -->
+    <section id="module-1" class="module-panel is-active" aria-labelledby="tab-btn-1">
+      <div class="sub-tabs" role="tablist" aria-label="Subsistema hidráulico">
+        <button type="button" class="sub-tab is-active" id="subtab-water" onclick="switchHydMode('water')">
+          Red de Agua Potable · Norma OS.050 (Hazen-Williams)
+        </button>
+        <button type="button" class="sub-tab" id="subtab-sewer" onclick="switchHydMode('sewer')">
+          Colector de Alcantarillado · Norma OS.070 (Manning)
+        </button>
+      </div>
+
+      <!-- SUBMODO 1A: AGUA POTABLE OS.050 -->
+      <div id="hyd-water-view" class="workspace-grid">
+        <div class="controls-col">
+          <div class="layer">
+            <span class="label-mono">Escenarios de demostración (OS.050)</span>
+            <p class="helper-text" style="margin-top:var(--space-xs);margin-bottom:var(--space-sm);">Carga casos típicos de expediente técnico para evaluar el comportamiento piezométrico.</p>
+            <div class="preset-row">
+              <button type="button" class="preset-btn" id="preset-w-low" onclick="applyWaterPreset('low')">Zona Alta (Baja Presión)</button>
+              <button type="button" class="preset-btn" id="preset-w-high" onclick="applyWaterPreset('high')">Desnivel Crítico (&gt;50 mca)</button>
+              <button type="button" class="preset-btn" id="preset-w-ok" onclick="applyWaterPreset('ok')">Tramo Sectorizado Óptimo</button>
+            </div>
+          </div>
+
+          <div class="layer" style="display:grid;gap:var(--space-md);">
+            <span class="label-mono">Parámetros del Tramo y Tubería</span>
+
+            <div class="field-group">
+              <div class="field-label-row">
+                <label class="field-label" for="w-zres-num">Cota Piezométrica Reservorio (Z₀)</label>
+                <span class="field-unit">m.s.n.m.</span>
+              </div>
+              <div class="dual-input">
+                <input type="range" id="w-zres-range" class="range-slider" min="100" max="260" step="0.5" value="185" oninput="syncWaterSlider('zres', this.value)">
+                <input type="number" id="w-zres-num" class="input-box mono-num" min="100" max="260" step="0.5" value="185" oninput="syncWaterNumber('zres', this.value)">
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div class="field-label-row">
+                <label class="field-label" for="w-znodo-num">Cota Terreno en Nodo Final (Z₁)</label>
+                <span class="field-unit">m.s.n.m.</span>
+              </div>
+              <div class="dual-input">
+                <input type="range" id="w-znodo-range" class="range-slider" min="60" max="240" step="0.5" value="152" oninput="syncWaterSlider('znodo', this.value)">
+                <input type="number" id="w-znodo-num" class="input-box mono-num" min="60" max="240" step="0.5" value="152" oninput="syncWaterNumber('znodo', this.value)">
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div class="field-label-row">
+                <label class="field-label" for="w-len-num">Longitud del Tramo (L)</label>
+                <span class="field-unit">m</span>
+              </div>
+              <div class="dual-input">
+                <input type="range" id="w-len-range" class="range-slider" min="50" max="1500" step="10" value="650" oninput="syncWaterSlider('len', this.value)">
+                <input type="number" id="w-len-num" class="input-box mono-num" min="50" max="1500" step="10" value="650" oninput="syncWaterNumber('len', this.value)">
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div class="field-label-row">
+                <label class="field-label" for="w-q-num">Caudal Máximo Horario (Qmh)</label>
+                <span class="field-unit">L/s</span>
+              </div>
+              <div class="dual-input">
+                <input type="range" id="w-q-range" class="range-slider" min="2" max="60" step="0.5" value="18" oninput="syncWaterSlider('q', this.value)">
+                <input type="number" id="w-q-num" class="input-box mono-num" min="2" max="60" step="0.5" value="18" oninput="syncWaterNumber('q', this.value)">
+              </div>
+            </div>
+
+            <div class="form-row-2">
+              <div class="field-group">
+                <label class="field-label" for="w-diam">Diámetro Interior (D)</label>
+                <select id="w-diam" class="select-box mono-num" onchange="updateWaterField('diam', this.value)">
+                  <option value="50">50 mm (2")</option>
+                  <option value="63">63 mm</option>
+                  <option value="75">75 mm (2.5")</option>
+                  <option value="90">90 mm (3")</option>
+                  <option value="110">110 mm (4")</option>
+                  <option value="160">160 mm (6")</option>
+                  <option value="200">200 mm (8")</option>
+                  <option value="250">250 mm (10")</option>
+                  <option value="315">315 mm (12")</option>
+                </select>
+              </div>
+              <div class="field-group">
+                <label class="field-label" for="w-c">Coeficiente C (Hazen-W.)</label>
+                <select id="w-c" class="select-box" onchange="updateWaterField('c', this.value)">
+                  <option value="150">150 · HDPE PE-100</option>
+                  <option value="140">140 · PVC NTP ISO 1452</option>
+                  <option value="110">110 · Hierro Dúctil</option>
+                  <option value="90">90 · Tubería Antigua</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="results-col">
+          <!-- KPIs -->
+          <div class="kpi-grid">
+            <div class="kpi-tile key-tile">
+              <span class="label-mono">Presión Dinámica</span>
+              <span id="w-kpi-pdin" class="kpi-value">0.00 mca</span>
+              <span id="w-tag-pdin" class="tag tag-ok">Cumple ≥ 10 mca</span>
+            </div>
+            <div class="kpi-tile">
+              <span class="label-mono">Presión Estática</span>
+              <span id="w-kpi-pest" class="kpi-value">0.00 mca</span>
+              <span id="w-tag-pest" class="tag tag-ok">Cumple ≤ 50 mca</span>
+            </div>
+            <div class="kpi-tile">
+              <span class="label-mono">Velocidad Flujo</span>
+              <span id="w-kpi-vel" class="kpi-value">0.00 m/s</span>
+              <span id="w-tag-vel" class="tag tag-ok">Rango 0.6–3.0 m/s</span>
+            </div>
+            <div class="kpi-tile">
+              <span class="label-mono">Pérdida Carga (hf)</span>
+              <span id="w-kpi-hf" class="kpi-value">0.00 m</span>
+              <span id="w-kpi-slope" class="helper-text mono-num">S = 0.00 m/km</span>
+            </div>
+          </div>
+
+          <!-- AI Optimization Notice -->
+          <div id="w-ai-box" class="notice">
+            <div class="notice-head">
+              <span class="notice-title">
+                <i data-lucide="cpu" aria-hidden="true" style="width:18px;height:18px;"></i>
+                Asistente IA · Diagnóstico Normativo OS.050
+              </span>
+              <button type="button" class="btn btn-primary btn-compact" id="w-ai-apply-btn" onclick="applyWaterAiFix()">
+                Aplicar optimización IA
+              </button>
+            </div>
+            <p id="w-ai-text" class="helper-text" style="color:var(--on-surface);"></p>
+          </div>
+
+          <!-- Hydraulic SVG Profile -->
+          <div class="viz-frame">
+            <div class="viz-head">
+              <div>
+                <h2 class="subhead">Perfil Piezométrico e Hidráulico del Tramo</h2>
+                <span class="label-mono">Ecuación Hazen-Williams · Q = 0.2785 · C · D^2.63 · S^0.54</span>
+              </div>
+              <div class="viz-legend">
+                <span class="legend-item"><span class="legend-swatch" style="background:var(--data-context);"></span>Línea Estática</span>
+                <span class="legend-item"><span class="legend-swatch" style="background:var(--primary);"></span>Línea Piezométrica</span>
+                <span class="legend-item"><span class="legend-swatch" style="background:var(--positive-container);border:1px solid var(--positive);"></span>Banda 10–50 mca</span>
+              </div>
+            </div>
+            <svg id="w-svg" class="viz-canvas" viewBox="0 0 720 290" role="img" aria-label="Perfil piezométrico de red de agua potable"></svg>
+          </div>
+
+          <!-- Normative checks table -->
+          <div class="layer-bordered">
+            <span class="label-mono" style="margin-bottom:var(--space-xs);">Matriz de Verificación · RNE OS.050 &amp; Ficha Técnica MVCS</span>
+            <div id="w-checks" class="check-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUBMODO 1B: ALCANTARILLADO OS.070 -->
+      <div id="hyd-sewer-view" class="workspace-grid" style="display:none;">
+        <div class="controls-col">
+          <div class="layer">
+            <span class="label-mono">Escenarios de demostración (OS.070)</span>
+            <p class="helper-text" style="margin-top:var(--space-xs);margin-bottom:var(--space-sm);">Simula flujo parcialmente lleno, tensión tractiva e impacto de entradas ilícitas.</p>
+            <div class="preset-row">
+              <button type="button" class="preset-btn" id="preset-s-flat" onclick="applySewerPreset('flat')">Pendiente Baja (Sedimenta)</button>
+              <button type="button" class="preset-btn" id="preset-s-surge" onclick="applySewerPreset('surge')">Sobrecarga Ilícita (d/D &gt; 0.75)</button>
+              <button type="button" class="preset-btn" id="preset-s-ok" onclick="applySewerPreset('ok')">Colector Optimizado OS.070</button>
+            </div>
+          </div>
+
+          <div class="layer" style="display:grid;gap:var(--space-md);">
+            <span class="label-mono">Parámetros Geométricos e Hidráulicos</span>
+
+            <div class="form-row-2">
+              <div class="field-group">
+                <label class="field-label" for="s-diam">Diámetro Nominal (D)</label>
+                <select id="s-diam" class="select-box mono-num" onchange="updateSewerField('diam', this.value)">
+                  <option value="160">160 mm (Condominial)</option>
+                  <option value="200">200 mm (8" Mín. OS.070)</option>
+                  <option value="250">250 mm (10")</option>
+                  <option value="315">315 mm (12" Emisor)</option>
+                  <option value="355">355 mm (14")</option>
+                  <option value="400">400 mm (16")</option>
+                  <option value="500">500 mm (20")</option>
+                </select>
+              </div>
+              <div class="field-group">
+                <label class="field-label" for="s-n">Rugosidad Manning (n)</label>
+                <select id="s-n" class="select-box" onchange="updateSewerField('n', this.value)">
+                  <option value="0.010">0.010 · PVC NTP ISO 4435</option>
+                  <option value="0.013">0.013 · Concreto Normal</option>
+                  <option value="0.015">0.015 · Arcilla / Deteriorada</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div class="field-label-row">
+                <label class="field-label" for="s-slope-num">Pendiente del Colector (S₀)</label>
+                <span class="field-unit">‰ (m/km)</span>
+              </div>
+              <div class="dual-input">
+                <input type="range" id="s-slope-range" class="range-slider" min="1.5" max="40" step="0.5" value="4.0" oninput="syncSewerSlider('slope', this.value)">
+                <input type="number" id="s-slope-num" class="input-box mono-num" min="1.5" max="40" step="0.5" value="4.0" oninput="syncSewerNumber('slope', this.value)">
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div class="field-label-row">
+                <label class="field-label" for="s-q-num">Caudal Sanitario Base (Qsan)</label>
+                <span class="field-unit">L/s</span>
+              </div>
+              <div class="dual-input">
+                <input type="range" id="s-q-range" class="range-slider" min="2" max="150" step="1" value="22" oninput="syncSewerSlider('q', this.value)">
+                <input type="number" id="s-q-num" class="input-box mono-num" min="2" max="150" step="1" value="22" oninput="syncSewerNumber('q', this.value)">
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div class="field-label-row">
+                <label class="field-label" for="s-infil-num">Infiltración y Entradas Ilícitas (+%)</label>
+                <span class="field-unit">% sobre Qsan</span>
+              </div>
+              <div class="dual-input">
+                <input type="range" id="s-infil-range" class="range-slider" min="0" max="80" step="5" value="15" oninput="syncSewerSlider('infil', this.value)">
+                <input type="number" id="s-infil-num" class="input-box mono-num" min="0" max="80" step="5" value="15" oninput="syncSewerNumber('infil', this.value)">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="results-col">
+          <div class="kpi-grid">
+            <div class="kpi-tile key-tile">
+              <span class="label-mono">Velocidad Real</span>
+              <span id="s-kpi-vel" class="kpi-value">0.00 m/s</span>
+              <span id="s-tag-vel" class="tag tag-ok">Autolimpieza ≥ 0.60</span>
+            </div>
+            <div class="kpi-tile">
+              <span class="label-mono">Relación Tirante d/D</span>
+              <span id="s-kpi-dd" class="kpi-value">0.00</span>
+              <span id="s-tag-dd" class="tag tag-ok">Límite ≤ 0.75</span>
+            </div>
+            <div class="kpi-tile">
+              <span class="label-mono">Tensión Tractiva (τ)</span>
+              <span id="s-kpi-tau" class="kpi-value">0.00 Pa</span>
+              <span id="s-tag-tau" class="tag tag-ok">Mínima ≥ 1.00 Pa</span>
+            </div>
+            <div class="kpi-tile">
+              <span class="label-mono">Caudal Total Diseño</span>
+              <span id="s-kpi-qtot" class="kpi-value">0.0 L/s</span>
+              <span id="s-kpi-qfull" class="helper-text mono-num">Q_lleno = 0.0 L/s</span>
+            </div>
+          </div>
+
+          <div id="s-ai-box" class="notice">
+            <div class="notice-head">
+              <span class="notice-title">
+                <i data-lucide="cpu" aria-hidden="true" style="width:18px;height:18px;"></i>
+                Asistente IA · Optimización de Colector OS.070
+              </span>
+              <button type="button" class="btn btn-primary btn-compact" id="s-ai-apply-btn" onclick="applySewerAiFix()">
+                Aplicar optimización IA
+              </button>
+            </div>
+            <p id="s-ai-text" class="helper-text" style="color:var(--on-surface);"></p>
+          </div>
+
+          <div class="viz-frame">
+            <div class="viz-head">
+              <div>
+                <h2 class="subhead">Sección Transversal y Curva de Capacidad (Manning)</h2>
+                <span class="label-mono">v = (1/n) · Rh^(2/3) · S₀^(1/2) · Criterio d/D ≤ 0.75</span>
+              </div>
+              <div class="viz-legend">
+                <span class="legend-item"><span class="legend-swatch" style="background:var(--primary);"></span>Lámina de agua (d)</span>
+                <span class="legend-item"><span class="legend-swatch" style="background:var(--error);"></span>Tope normativo 0.75 D</span>
+              </div>
+            </div>
+            <svg id="s-svg" class="viz-canvas" viewBox="0 0 720 290" role="img" aria-label="Sección transversal hidráulica del colector de alcantarillado"></svg>
+          </div>
+
+          <div class="layer-bordered">
+            <span class="label-mono" style="margin-bottom:var(--space-xs);">Verificación Normativa · RNE OS.070</span>
+            <div id="s-checks" class="check-list"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- MÓDULO 2: DIAGNÓSTICO SFD Y SANEAMIENTO INCLUSIVO (CWIS)              -->
+    <!-- ===================================================================== -->
+    <section id="module-2" class="module-panel" aria-labelledby="tab-btn-2">
+      <div class="workspace-grid">
+        <div class="controls-col">
+          <div class="layer">
+            <span class="label-mono">Escenarios Territoriales (SFD + CWIS)</span>
+            <p class="helper-text" style="margin-top:var(--space-xs);margin-bottom:var(--space-sm);">Compara el paradigma tradicional centralizado frente al enfoque híbrido inclusivo.</p>
+            <div class="preset-row">
+              <button type="button" class="preset-btn" id="preset-sfd-trad" onclick="applySfdPreset('traditional')">Ciudad "Flush &amp; Forget"</button>
+              <button type="button" class="preset-btn" id="preset-sfd-rural" onclick="applySfdPreset('rural')">Periurbano / Napa Alta</button>
+              <button type="button" class="preset-btn" id="preset-sfd-cwis" onclick="applySfdPreset('cwis')">Modelo CWIS + Economía Circular</button>
+            </div>
+          </div>
+
+          <div class="layer" style="display:grid;gap:var(--space-md);">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span class="label-mono">Distribución de Sistemas (Suma = 100%)</span>
+              <span class="tag tag-blue">Balance Auto-ajustado</span>
+            </div>
+
+            <div class="field-group">
+              <div class="field-label-row">
+                <label class="field-label" for="sfd-sewer-num">Alcantarillado (Convencional / Condominial)</label>
+                <span class="field-unit">% pob.</span>
+              </div>
+              <div class="dual-input">
+                <input type="range" id="sfd-sewer-range" class="range-slider" min="0" max="100" step="1" value="60" oninput="syncSfdShare('sewer', this.value)">
+                <input type="number" id="sfd-sewer-num" class="input-box mono-num" min="0" max="100" step="1" value="60" oninput="syncSfdShareNum('sewer', this.value)">
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div class="field-label-row">
+                <label class="field-label" for="sfd-ubs-num">UBS con Biodigestor / Arrastre Hidráulico</label>
+                <span class="field-unit">% pob.</span>
+              </div>
+              <div class="dual-input">
+                <input type="range" id="sfd-ubs-range" class="range-slider" min="0" max="100" step="1" value="15" oninput="syncSfdShare('ubs', this.value)">
+                <input type="number" id="sfd-ubs-num" class="input-box mono-num" min="0" max="100" step="1" value="15" oninput="syncSfdShareNum('ubs', this.value)">
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div class="field-label-row">
+                <label class="field-label" for="sfd-pit-num">Pozos Ciegos / Letrinas sin Sello</label>
+                <span class="field-unit">% pob.</span>
+              </div>
+              <div class="dual-input">
+                <input type="range" id="sfd-pit-range" class="range-slider" min="0" max="100" step="1" value="15" oninput="syncSfdShare('pit', this.value)">
+                <input type="number" id="sfd-pit-num" class="input-box mono-num" min="0" max="100" step="1" value="15" oninput="syncSfdShareNum('pit', this.value)">
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div class="field-label-row">
+                <label class="field-label" for="sfd-open-num">Descarga Directa / Sin Infraestructura</label>
+                <span class="field-unit">% pob.</span>
+              </div>
+              <div class="dual-input">
+                <input type="range" id="sfd-open-range" class="range-slider" min="0" max="100" step="1" value="10" oninput="syncSfdShare('open', this.value)">
+                <input type="number" id="sfd-open-num" class="input-box mono-num" min="0" max="100" step="1" value="10" oninput="syncSfdShareNum('open', this.value)">
+              </div>
+            </div>
+          </div>
+
+          <div class="layer" style="display:grid;gap:var(--space-md);">
+            <span class="label-mono">Integridad de Cadena de Servicio &amp; Entorno</span>
+
+            <div class="field-group">
+              <div class="field-label-row">
+                <label class="field-label" for="sfd-net-eff">Hermeticidad de Red (Sin roturas / aniegos)</label>
+                <span class="field-unit">%</span>
+              </div>
+              <div class="dual-input">
+                <input type="range" id="sfd-net-range" class="range-slider" min="20" max="100" step="1" value="70" oninput="syncSfdParam('netEff', this.value)">
+                <input type="number" id="sfd-net-eff" class="input-box mono-num" min="20" max="100" step="1" value="70" oninput="syncSfdParamNum('netEff', this.value)">
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div class="field-label-row">
+                <label class="field-label" for="sfd-ptar-eff">Eficiencia Operativa PTAR (Cumple ECA)</label>
+                <span class="field-unit">%</span>
+              </div>
+              <div class="dual-input">
+                <input type="range" id="sfd-ptar-range" class="range-slider" min="0" max="100" step="1" value="45" oninput="syncSfdParam('ptarEff', this.value)">
+                <input type="number" id="sfd-ptar-eff" class="input-box mono-num" min="0" max="100" step="1" value="45" oninput="syncSfdParamNum('ptarEff', this.value)">
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div class="field-label-row">
+                <label class="field-label" for="sfd-fsm-eff">Vaciado Mecánico FSM y Planta Biosólidos</label>
+                <span class="field-unit">%</span>
+              </div>
+              <div class="dual-input">
+                <input type="range" id="sfd-fsm-range" class="range-slider" min="0" max="100" step="1" value="35" oninput="syncSfdParam('fsmEff', this.value)">
+                <input type="number" id="sfd-fsm-eff" class="input-box mono-num" min="0" max="100" step="1" value="35" oninput="syncSfdParamNum('fsmEff', this.value)">
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="sfd-watertable">Nivel Freático / Vulnerabilidad Climática (PIASAR)</label>
+              <select id="sfd-watertable" class="select-box" onchange="updateSfdSelect('waterTable', this.value)">
+                <option value="high">Alto · Riesgo de contaminación de acuífero</option>
+                <option value="low">Bajo · Suelo profundo permeable sin riesgo</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="results-col">
+          <div class="kpi-grid">
+            <div class="kpi-tile key-tile">
+              <span class="label-mono">Gestión Segura (Verde)</span>
+              <span id="sfd-kpi-safe" class="kpi-value is-ok">0.0%</span>
+              <span id="sfd-tag-safe" class="tag tag-ok">Meta ODS 6.2</span>
+            </div>
+            <div class="kpi-tile">
+              <span class="label-mono">Gestión Insegura (Rojo)</span>
+              <span id="sfd-kpi-unsafe" class="kpi-value is-err">0.0%</span>
+              <span class="helper-text">Carga patógena al entorno</span>
+            </div>
+            <div class="kpi-tile">
+              <span class="label-mono">Índice Madurez CWIS</span>
+              <span id="sfd-kpi-cwis" class="kpi-value">0 / 100</span>
+              <span id="sfd-tag-cwis" class="tag tag-warn">En transición</span>
+            </div>
+            <div class="kpi-tile">
+              <span class="label-mono">Potencial Reuso Seguro</span>
+              <span id="sfd-kpi-reuse" class="kpi-value">0.0%</span>
+              <span class="helper-text">Efluente PTAR + Biosólidos</span>
+            </div>
+          </div>
+
+          <!-- SFD AI Insight -->
+          <div id="sfd-ai-box" class="notice">
+            <div class="notice-head">
+              <span class="notice-title">
+                <i data-lucide="git-branch" aria-hidden="true" style="width:18px;height:18px;"></i>
+                Diagnóstico IA · Priorización de Inversión CWIS
+              </span>
+              <button type="button" class="btn btn-primary btn-compact" onclick="applyCwisOptimization()">
+                Simular paquete CWIS
+              </button>
+            </div>
+            <p id="sfd-ai-text" class="helper-text" style="color:var(--on-surface);"></p>
+          </div>
+
+          <!-- SFD Diagram SVG -->
+          <div class="viz-frame">
+            <div class="viz-head">
+              <div>
+                <h2 class="subhead">Diagrama de Flujo de Excreta (SFD) · Balance 100%</h2>
+                <span class="label-mono">Contención → Vaciado / Transporte → Tratamiento / Disposición</span>
+              </div>
+              <div class="viz-legend">
+                <span class="legend-item"><span class="legend-swatch" style="background:var(--positive);"></span>Flujo Seguro</span>
+                <span class="legend-item"><span class="legend-swatch" style="background:var(--error);"></span>Flujo Inseguro</span>
+              </div>
+            </div>
+            <svg id="sfd-svg" class="viz-canvas-tall" viewBox="0 0 740 350" role="img" aria-label="Diagrama SFD de flujos de excretas seguras e inseguras"></svg>
+          </div>
+
+          <!-- CWIS 4 Pillars -->
+          <div class="pillar-grid" id="cwis-pillars"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- MÓDULO 3: AUDITORÍA BIM E INTERFERENCIAS BCF                          -->
+    <!-- ===================================================================== -->
+    <section id="module-3" class="module-panel" aria-labelledby="tab-btn-3">
+      <div class="kpi-grid">
+        <div class="kpi-tile key-tile">
+          <span class="label-mono">Interferencias Activas</span>
+          <span id="bim-kpi-open" class="kpi-value is-err">0</span>
+          <span class="helper-text">De 5 detectadas en federación IFC</span>
+        </div>
+        <div class="kpi-tile">
+          <span class="label-mono">Clashes Críticos</span>
+          <span id="bim-kpi-crit" class="kpi-value is-warn">0</span>
+          <span class="helper-text">Colisión física o riesgo sanitario</span>
+        </div>
+        <div class="kpi-tile">
+          <span class="label-mono">Resueltas (As-Built)</span>
+          <span id="bim-kpi-res" class="kpi-value is-ok">0</span>
+          <span class="helper-text">Listas para expediente técnico</span>
+        </div>
+        <div class="kpi-tile">
+          <span class="label-mono">Ahorro Evitado en Obra</span>
+          <span id="bim-kpi-save" class="kpi-value">S/ 0</span>
+          <span class="helper-text">Reducción de adicionales / retrabajos</span>
+        </div>
+      </div>
+
+      <div class="workspace-grid">
+        <!-- Left: Clash List & Filters -->
+        <div class="controls-col">
+          <div class="layer" style="display:grid;gap:var(--space-sm);">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:var(--space-sm);">
+              <span class="label-mono">Matriz de Incidencias BCF (openBIM)</span>
+              <div style="display:flex;gap:var(--space-xs);">
+                <button type="button" class="btn btn-secondary btn-compact" onclick="exportBcfLog()">Exportar BCF (.csv)</button>
+              </div>
+            </div>
+
+            <div class="form-row-2">
+              <div class="field-group">
+                <label class="field-label" for="bim-filter-sev">Filtrar Severidad</label>
+                <select id="bim-filter-sev" class="select-box" onchange="setBimFilter('sev', this.value)">
+                  <option value="all">Todas las severidades</option>
+                  <option value="Crítica">Crítica</option>
+                  <option value="Alta">Alta</option>
+                  <option value="Media">Media</option>
+                </select>
+              </div>
+              <div class="field-group">
+                <label class="field-label" for="bim-filter-status">Filtrar Estado BCF</label>
+                <select id="bim-filter-status" class="select-box" onchange="setBimFilter('status', this.value)">
+                  <option value="all">Todos los estados</option>
+                  <option value="Abierto">Abierto</option>
+                  <option value="En Revisión">En Revisión</option>
+                  <option value="Resuelto">Resuelto</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table class="carbon-table" aria-label="Listado de interferencias BIM">
+                <thead>
+                  <tr>
+                    <th>BCF</th>
+                    <th>Especialidades</th>
+                    <th>Sev.</th>
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+                <tbody id="bim-table-body"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Add new BCF issue inline -->
+          <div class="layer" style="display:grid;gap:var(--space-sm);">
+            <span class="label-mono">Registrar Nueva Incidencia en Campo / Revisión</span>
+            <div class="field-group">
+              <label class="field-label" for="new-bcf-title">Descripción del cruce o interferencia</label>
+              <input type="text" id="new-bcf-title" class="input-box" placeholder="Ej. Cruce tubería Ø160 mm con cámara de válvulas">
+            </div>
+            <div class="form-row-2">
+              <div class="field-group">
+                <label class="field-label" for="new-bcf-sev">Severidad</label>
+                <select id="new-bcf-sev" class="select-box">
+                  <option value="Crítica">Crítica</option>
+                  <option value="Alta">Alta</option>
+                  <option value="Media">Media</option>
+                </select>
+              </div>
+              <div class="field-group">
+                <label class="field-label" for="new-bcf-owner">Asignar a</label>
+                <select id="new-bcf-owner" class="select-box">
+                  <option value="Esp. Hidráulica">Esp. Hidráulica</option>
+                  <option value="Coordinador BIM">Coordinador BIM</option>
+                  <option value="Esp. Estructuras">Esp. Estructuras</option>
+                </select>
+              </div>
+            </div>
+            <button type="button" class="btn btn-secondary" onclick="addNewBcfIssue()">
+              <i data-lucide="plus" aria-hidden="true" style="width:16px;height:16px;"></i>
+              Agregar incidencia BCF
+            </button>
+            <div id="new-bcf-msg" class="helper-text" style="color:var(--error);"></div>
+          </div>
+        </div>
+
+        <!-- Right: Synthetic BIM Viewer + Detail & Resolution -->
+        <div class="results-col">
+          <div class="viz-frame">
+            <div class="viz-head">
+              <div>
+                <h2 class="subhead">Visor Sintético de Coordinación IFC (Agua · Alcantarillado · Drenaje)</h2>
+                <span class="label-mono" id="bim-viewer-sub">Haz clic en cualquier nodo de interferencia o fila BCF para inspeccionar</span>
+              </div>
+              <div style="display:flex;gap:var(--space-xs);">
+                <button type="button" class="preset-btn is-active" id="view-btn-iso" onclick="setBimViewMode('iso')">Axonometría 3D</button>
+                <button type="button" class="preset-btn" id="view-btn-sec" onclick="setBimViewMode('sec')">Perfil de Zanja (ΔZ)</button>
+              </div>
+            </div>
+            <svg id="bim-svg" class="viz-canvas-tall" viewBox="0 0 740 340" role="img" aria-label="Visor de interferencias BIM entre redes de agua, alcantarillado y drenaje"></svg>
+            <div class="viz-legend">
+              <span class="legend-item"><span class="legend-swatch" style="background:var(--data-1);"></span>Agua Potable (IFC_Water)</span>
+              <span class="legend-item"><span class="legend-swatch" style="background:var(--data-2);"></span>Alcantarillado (IFC_Sewer)</span>
+              <span class="legend-item"><span class="legend-swatch" style="background:var(--data-3);"></span>Drenaje Pluvial (IFC_Drain)</span>
+              <span class="legend-item"><span class="legend-swatch" style="background:var(--error);"></span>Clash Activo</span>
+              <span class="legend-item"><span class="legend-swatch" style="background:var(--positive);"></span>Resuelto As-Built</span>
+            </div>
+          </div>
+
+          <!-- Selected Clash Detail & BCF Assignment -->
+          <div id="bim-detail-panel" class="layer-bordered" style="display:grid;gap:var(--space-md);"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+      <span>Fuentes técnicas de referencia: RNE Normas OS.050 y OS.070 (MVCS Perú) · Guía Técnica BIM (MEF) · Ficha Técnica Estándar Saneamiento Urbano (MVCS/PIASAR) · Alianza SFD / SuSanA / Banco Mundial (CWIS) · OMS Sanitation Safety Planning.</span>
+      <span class="mono-num">LOIN 300 · openBIM IFC 4.3 · BCF 2.1</span>
+    </footer>
+  </div>
+
+  <api-shim></api-shim>
+  <script>
+    /* =======================================================================
+       STATE & DEFAULTS
+       ======================================================================= */
+    const DEFAULT_STATE = {
+      activeModule: 1,
+      hydMode: 'water',
+      water: {
+        zres: 185,
+        znodo: 152,
+        len: 650,
+        q: 18,
+        diam: 110,
+        c: 140,
+        preset: 'low'
+      },
+      sewer: {
+        diam: 200,
+        n: 0.010,
+        slope: 3.0,
+        q: 22,
+        infil: 15,
+        preset: 'flat'
+      },
+      sfd: {
+        sewer: 60,
+        ubs: 15,
+        pit: 15,
+        open: 10,
+        netEff: 70,
+        ptarEff: 45,
+        fsmEff: 35,
+        waterTable: 'high',
+        preset: 'traditional'
+      },
+      bim: {
+        selectedId: 'BCF-001',
+        viewMode: 'iso',
+        filterSev: 'all',
+        filterStatus: 'all',
+        clashes: [
+          {
+            id: 'BCF-001',
+            title: `Cruce Agua Potable Ø110 mm sobre Colector Ø250 mm (Resguardo insuficiente)`,
+            disciplines: `Agua vs. Alcantarillado`,
+            type: `Soft Clash (Sanitario)`,
+            severity: `Crítica`,
+            status: `Abierto`,
+            owner: `Esp. Hidráulica`,
+            loin: `LOIN 300`,
+            ifcGuid: `2O2Fr$t4X7Zf8NOew3FLOH`,
+            dzCurrent: -0.05,
+            dzRequired: 0.20,
+            costImpact: 24500,
+            aiSolution: `Deprimir rasante del colector sanitario en 0.35 m en buzón BZ-04 (cota fondo 98.10 m) y asegurar encamado granular, logrando resguardo vertical libre ΔZ = +0.30 m (> 0.20 m OS.050).`,
+            xPos: 230,
+            yPos: 155
+          },
+          {
+            id: 'BCF-002',
+            title: `Colisión física Colector Ø315 mm con Canal Pluvial Rectangular 1.0×0.8 m`,
+            disciplines: `Alcantarillado vs. Drenaje`,
+            type: `Hard Clash`,
+            severity: `Crítica`,
+            status: `Abierto`,
+            owner: `Coordinador BIM`,
+            loin: `LOIN 350`,
+            ifcGuid: `3P9Gs$u5Y8Ag9OPfx4GMPI`,
+            dzCurrent: 0.00,
+            dzRequired: 0.30,
+            costImpact: 42000,
+            aiSolution: `Diseñar sifón invertido de doble barril en cruce progresiva 0+185 o reubicar trazo de drenaje pluvial +0.45 m por encima de clave sanitaria manteniendo pendiente 0.5%.`,
+            xPos: 470,
+            yPos: 190
+          },
+          {
+            id: 'BCF-003',
+            title: `Tubería impulsión Agua Ø160 mm invade zona de acceso a Buzón de Inspección BZ-07`,
+            disciplines: `Agua vs. Alcantarillado`,
+            type: `Hard Clash`,
+            severity: `Alta`,
+            status: `En Revisión`,
+            owner: `Esp. Hidráulica`,
+            loin: `LOIN 300`,
+            ifcGuid: `1N1Eq#s3W6Ye7MNdv2EKNG`,
+            dzCurrent: 0.12,
+            dzRequired: 1.50,
+            costImpact: 14800,
+            aiSolution: `Desplazar eje de línea de impulsión 1.80 m hacia el lado par de la vía mediante dos codos HDPE de 22.5°, liberando el fuste del buzón BZ-07 para mantenimiento.`,
+            xPos: 350,
+            yPos: 120
+          },
+          {
+            id: 'BCF-004',
+            title: `Cámara de Válvulas CRP-02 sin distancia mínima a Sumidero Pluvial S-11`,
+            disciplines: `Agua vs. Drenaje`,
+            type: `Soft Clash`,
+            severity: `Media`,
+            status: `Abierto`,
+            owner: `Esp. Estructuras`,
+            loin: `LOIN 300`,
+            ifcGuid: `4Q0Ht%v6Z9Bh0PQgy5HNQJ`,
+            dzCurrent: 0.45,
+            dzRequired: 1.20,
+            costImpact: 9200,
+            aiSolution: `Reubicar sumidero pluvial S-11 a 2.10 m aguas arriba de la cámara CRP-02 para evitar ingreso de escorrentía superficial durante precipitaciones máximas.`,
+            xPos: 580,
+            yPos: 145
+          },
+          {
+            id: 'BCF-005',
+            title: `Emisor PTAR PVC Ø315 mm interfiere con Zapata de Cerco Perimétrico`,
+            disciplines: `Alcantarillado vs. Estructuras`,
+            type: `Hard Clash`,
+            severity: `Alta`,
+            status: `Resuelto`,
+            owner: `Esp. Estructuras`,
+            loin: `LOIN 350`,
+            ifcGuid: `5R1Iu&w7A0Ci1QRhz6IORK`,
+            dzCurrent: 0.35,
+            dzRequired: 0.30,
+            costImpact: 11500,
+            aiSolution: `Incorporado pase estructural encamisado con viga puente sobre el emisor Ø315 mm en plano As-Built.`,
+            xPos: 140,
+            yPos: 225
+          }
+        ]
+      }
+    };
+
+    let appState = JSON.parse(JSON.stringify(DEFAULT_STATE));
+
+    /* Demo 7-minute timer state (transient) */
+    let timerSeconds = 420;
+    let timerRunning = false;
+    let timerInterval = null;
+    let saveTimer = null;
+
+    /* =======================================================================
+       PERSISTENCE & LIFECYCLE (notebookAppApi)
+       ======================================================================= */
+    async function initApp() {
+      try {
+        if (window.notebookAppApi && typeof window.notebookAppApi.getAppState === 'function') {
+          const saved = await window.notebookAppApi.getAppState();
+          if (saved && typeof saved === 'object') {
+            mergeSavedState(saved);
+          }
+        }
+      } catch (err) {
+        // Fallback smoothly to DEFAULT_STATE
+      }
+
+      syncAllControlsFromState();
+      switchModule(appState.activeModule, true);
+      switchHydMode(appState.hydMode, true);
+      renderWaterModule();
+      renderSewerModule();
+      renderSfdModule();
+      renderBimModule();
+      updateTimerDisplay();
+
+      if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+      }
+
+      try {
+        if (window.notebookAppApi && typeof window.notebookAppApi.notifyAppReady === 'function') {
+          window.notebookAppApi.notifyAppReady();
+        }
+      } catch (err) {
+        // Ignore when standalone
+      }
+    }
+
+    function mergeSavedState(saved) {
+      if (typeof saved.activeModule === 'number') appState.activeModule = saved.activeModule;
+      if (saved.hydMode === 'water' || saved.hydMode === 'sewer') appState.hydMode = saved.hydMode;
+      if (saved.water && typeof saved.water === 'object') Object.assign(appState.water, saved.water);
+      if (saved.sewer && typeof saved.sewer === 'object') Object.assign(appState.sewer, saved.sewer);
+      if (saved.sfd && typeof saved.sfd === 'object') Object.assign(appState.sfd, saved.sfd);
+      if (saved.bim && typeof saved.bim === 'object') {
+        if (typeof saved.bim.selectedId === 'string') appState.bim.selectedId = saved.bim.selectedId;
+        if (saved.bim.viewMode === 'iso' || saved.bim.viewMode === 'sec') appState.bim.viewMode = saved.bim.viewMode;
+        if (typeof saved.bim.filterSev === 'string') appState.bim.filterSev = saved.bim.filterSev;
+        if (typeof saved.bim.filterStatus === 'string') appState.bim.filterStatus = saved.bim.filterStatus;
+        if (Array.isArray(saved.bim.clashes) && saved.bim.clashes.length > 0) {
+          appState.bim.clashes = saved.bim.clashes;
+        }
+      }
+    }
+
+    function scheduleSaveState() {
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(async function () {
+        try {
+          if (window.notebookAppApi && typeof window.notebookAppApi.setAppState === 'function') {
+            await window.notebookAppApi.setAppState(appState);
+          }
+        } catch (err) {
+          // Non-blocking fallback
+        }
+      }, 180);
+    }
+
+    function setElValue(id, val) {
+      const el = document.getElementById(id);
+      if (el) el.value = val;
+    }
+
+    function syncAllControlsFromState() {
+      setElValue('w-zres-range', appState.water.zres);
+      setElValue('w-zres-num', appState.water.zres);
+      setElValue('w-znodo-range', appState.water.znodo);
+      setElValue('w-znodo-num', appState.water.znodo);
+      setElValue('w-len-range', appState.water.len);
+      setElValue('w-len-num', appState.water.len);
+      setElValue('w-q-range', appState.water.q);
+      setElValue('w-q-num', appState.water.q);
+      setElValue('w-diam', appState.water.diam);
+      setElValue('w-c', appState.water.c);
+
+      setElValue('s-diam', appState.sewer.diam);
+      setElValue('s-n', appState.sewer.n);
+      setElValue('s-slope-range', appState.sewer.slope);
+      setElValue('s-slope-num', appState.sewer.slope);
+      setElValue('s-q-range', appState.sewer.q);
+      setElValue('s-q-num', appState.sewer.q);
+      setElValue('s-infil-range', appState.sewer.infil);
+      setElValue('s-infil-num', appState.sewer.infil);
+
+      setElValue('sfd-sewer-range', appState.sfd.sewer);
+      setElValue('sfd-sewer-num', appState.sfd.sewer);
+      setElValue('sfd-ubs-range', appState.sfd.ubs);
+      setElValue('sfd-ubs-num', appState.sfd.ubs);
+      setElValue('sfd-pit-range', appState.sfd.pit);
+      setElValue('sfd-pit-num', appState.sfd.pit);
+      setElValue('sfd-open-range', appState.sfd.open);
+      setElValue('sfd-open-num', appState.sfd.open);
+      setElValue('sfd-net-range', appState.sfd.netEff);
+      setElValue('sfd-net-eff', appState.sfd.netEff);
+      setElValue('sfd-ptar-range', appState.sfd.ptarEff);
+      setElValue('sfd-ptar-eff', appState.sfd.ptarEff);
+      setElValue('sfd-fsm-range', appState.sfd.fsmEff);
+      setElValue('sfd-fsm-eff', appState.sfd.fsmEff);
+      setElValue('sfd-watertable', appState.sfd.waterTable);
+
+      setElValue('bim-filter-sev', appState.bim.filterSev);
+      setElValue('bim-filter-status', appState.bim.filterStatus);
+      updatePresetActiveButtons();
+    }
+
+    function updatePresetActiveButtons() {
+      const wMap = { low: 'preset-w-low', high: 'preset-w-high', ok: 'preset-w-ok' };
+      Object.keys(wMap).forEach(function (k) {
+        const b = document.getElementById(wMap[k]);
+        if (b) b.classList.toggle('is-active', appState.water.preset === k);
+      });
+      const sMap = { flat: 'preset-s-flat', surge: 'preset-s-surge', ok: 'preset-s-ok' };
+      Object.keys(sMap).forEach(function (k) {
+        const b = document.getElementById(sMap[k]);
+        if (b) b.classList.toggle('is-active', appState.sewer.preset === k);
+      });
+      const sfdMap = { traditional: 'preset-sfd-trad', rural: 'preset-sfd-rural', cwis: 'preset-sfd-cwis' };
+      Object.keys(sfdMap).forEach(function (k) {
+        const b = document.getElementById(sfdMap[k]);
+        if (b) b.classList.toggle('is-active', appState.sfd.preset === k);
+      });
+    }
+
+    function showFeedback(msg) {
+      const el = document.getElementById('global-feedback');
+      if (!el) return;
+      el.textContent = msg;
+      setTimeout(function () {
+        if (el.textContent === msg) el.textContent = '';
+      }, 3600);
+    }
+
+    /* =======================================================================
+       NAVIGATION & TIMER
+       ======================================================================= */
+    function switchModule(num, skipSave) {
+      appState.activeModule = num;
+      [1, 2, 3].forEach(function (i) {
+        const tab = document.getElementById('tab-btn-' + i);
+        const panel = document.getElementById('module-' + i);
+        if (tab) tab.classList.toggle('is-active', i === num);
+        if (panel) panel.classList.toggle('is-active', i === num);
+      });
+      if (!skipSave) scheduleSaveState();
+    }
+
+    function switchHydMode(mode, skipSave) {
+      appState.hydMode = mode;
+      const wTab = document.getElementById('subtab-water');
+      const sTab = document.getElementById('subtab-sewer');
+      const wView = document.getElementById('hyd-water-view');
+      const sView = document.getElementById('hyd-sewer-view');
+      if (wTab) wTab.classList.toggle('is-active', mode === 'water');
+      if (sTab) sTab.classList.toggle('is-active', mode === 'sewer');
+      if (wView) wView.style.display = mode === 'water' ? 'grid' : 'none';
+      if (sView) sView.style.display = mode === 'sewer' ? 'grid' : 'none';
+      if (!skipSave) scheduleSaveState();
+    }
+
+    function toggleDemoTimer() {
+      const btn = document.getElementById('btn-timer-toggle');
+      if (timerRunning) {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        if (btn) btn.textContent = 'Reanudar';
+      } else {
+        timerRunning = true;
+        if (btn) btn.textContent = 'Pausar';
+        timerInterval = setInterval(function () {
+          if (timerSeconds > 0) {
+            timerSeconds -= 1;
+            updateTimerDisplay();
+          } else {
+            clearInterval(timerInterval);
+            timerRunning = false;
+            if (btn) btn.textContent = 'Finalizado';
+          }
+        }, 1000);
+      }
+    }
+
+    function resetDemoTimer() {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      timerSeconds = 420;
+      const btn = document.getElementById('btn-timer-toggle');
+      if (btn) btn.textContent = 'Iniciar';
+      updateTimerDisplay();
+    }
+
+    function updateTimerDisplay() {
+      const disp = document.getElementById('timer-display');
+      const phase = document.getElementById('demo-phase-label');
+      const mins = Math.floor(timerSeconds / 60);
+      const secs = timerSeconds % 60;
+      if (disp) {
+        disp.textContent = String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+      }
+      if (phase) {
+        const elapsed = 420 - timerSeconds;
+        if (elapsed < 150) phase.textContent = `Bloque 1 · Hidráulica IA (0–2.5 min)`;
+        else if (elapsed < 270) phase.textContent = `Bloque 2 · SFD & CWIS (2.5–4.5 min)`;
+        else phase.textContent = `Bloque 3 · BIM & BCF (4.5–7 min)`;
+      }
+    }
+
+    function resetAllState(btn) {
+      if (btn && btn.dataset.armed !== 'true') {
+        btn.dataset.armed = 'true';
+        btn.textContent = 'Confirmar reinicio';
+        setTimeout(function () {
+          if (btn.dataset.armed === 'true') {
+            btn.dataset.armed = 'false';
+            btn.textContent = 'Restablecer';
+          }
+        }, 3500);
+        return;
+      }
+      if (btn) {
+        btn.dataset.armed = 'false';
+        btn.textContent = 'Restablecer';
+      }
+      appState = JSON.parse(JSON.stringify(DEFAULT_STATE));
+      syncAllControlsFromState();
+      switchModule(1);
+      switchHydMode('water');
+      renderWaterModule();
+      renderSewerModule();
+      renderSfdModule();
+      renderBimModule();
+      scheduleSaveState();
+      showFeedback('Todos los parámetros e incidencias BCF fueron restablecidos a los valores base.');
+    }
+
+    /* =======================================================================
+       MODULE 1A: AGUA POTABLE OS.050 (HAZEN-WILLIAMS)
+       ======================================================================= */
+    function computeWaterHydraulics(w) {
+      const dMeters = w.diam / 1000;
+      const qM3s = w.q / 1000;
+      const area = Math.PI * Math.pow(dMeters, 2) / 4;
+      const vel = qM3s / area;
+      const slope = 10.67 * Math.pow(qM3s, 1.852) / (Math.pow(w.c, 1.852) * Math.pow(dMeters, 4.87));
+      const hf = slope * w.len;
+      const pest = w.zres - w.znodo;
+      const pdin = pest - hf;
+      return { vel, slope, hf, pest, pdin };
+    }
+
+    function applyWaterPreset(key) {
+      appState.water.preset = key;
+      if (key === 'low') {
+        Object.assign(appState.water, { zres: 185, znodo: 158, len: 750, q: 20, diam: 110, c: 140 });
+      } else if (key === 'high') {
+        Object.assign(appState.water, { zres: 215, znodo: 148, len: 500, q: 14, diam: 160, c: 140 });
+      } else {
+        Object.assign(appState.water, { zres: 185, znodo: 152, len: 650, q: 18, diam: 160, c: 140 });
+      }
+      syncAllControlsFromState();
+      renderWaterModule();
+      scheduleSaveState();
+    }
+
+    function syncWaterSlider(field, val) {
+      const numVal = parseFloat(val);
+      if (isNaN(numVal)) return;
+      appState.water[field] = numVal;
+      appState.water.preset = '';
+      setElValue('w-' + field + '-num', numVal);
+      updatePresetActiveButtons();
+      renderWaterModule();
+      scheduleSaveState();
+    }
+
+    function syncWaterNumber(field, val) {
+      const numVal = parseFloat(val);
+      if (isNaN(numVal)) return;
+      appState.water[field] = numVal;
+      appState.water.preset = '';
+      setElValue('w-' + field + '-range', numVal);
+      updatePresetActiveButtons();
+      renderWaterModule();
+      scheduleSaveState();
+    }
+
+    function updateWaterField(field, val) {
+      const numVal = parseFloat(val);
+      if (isNaN(numVal)) return;
+      appState.water[field] = numVal;
+      appState.water.preset = '';
+      updatePresetActiveButtons();
+      renderWaterModule();
+      scheduleSaveState();
+    }
+
+    function findBestWaterDiam() {
+      const diams = [50, 63, 75, 90, 110, 160, 200, 250, 315];
+      for (let i = 0; i < diams.length; i++) {
+        const test = Object.assign({}, appState.water, { diam: diams[i] });
+        const r = computeWaterHydraulics(test);
+        if (r.pdin >= 10 && r.vel <= 3.0 && r.vel >= 0.45) {
+          return diams[i];
+        }
+      }
+      return 200;
+    }
+
+    function applyWaterAiFix() {
+      const res = computeWaterHydraulics(appState.water);
+      if (res.pest > 50) {
+        appState.water.zres = Math.round((appState.water.znodo + 38) * 2) / 2;
+        showFeedback('Solución IA aplicada: Simulación de Cámara Rompe Presión (CRP-T7) bajando cota piezométrica efectiva.');
+      } else {
+        const bestD = findBestWaterDiam();
+        appState.water.diam = bestD;
+        if (appState.water.zres - appState.water.znodo < 15) {
+          appState.water.zres = appState.water.znodo + 22;
+        }
+        showFeedback('Solución IA aplicada: Diámetro optimizado a Ø ' + bestD + ' mm según Norma OS.050.');
+      }
+      appState.water.preset = '';
+      syncAllControlsFromState();
+      renderWaterModule();
+      scheduleSaveState();
+    }
+
+    function renderWaterModule() {
+      const w = appState.water;
+      const res = computeWaterHydraulics(w);
+
+      const pdinEl = document.getElementById('w-kpi-pdin');
+      const pdinTag = document.getElementById('w-tag-pdin');
+      const pestEl = document.getElementById('w-kpi-pest');
+      const pestTag = document.getElementById('w-tag-pest');
+      const velEl = document.getElementById('w-kpi-vel');
+      const velTag = document.getElementById('w-tag-vel');
+      const hfEl = document.getElementById('w-kpi-hf');
+      const slopeEl = document.getElementById('w-kpi-slope');
+
+      if (pdinEl) {
+        pdinEl.textContent = res.pdin.toFixed(2) + ' mca';
+        pdinEl.className = 'kpi-value ' + (res.pdin < 10 ? 'is-err' : (res.pdin > 50 ? 'is-warn' : 'is-ok'));
+      }
+      if (pdinTag) {
+        if (res.pdin < 10) {
+          pdinTag.className = 'tag tag-err';
+          pdinTag.textContent = 'Déficit (< 10 mca)';
+        } else if (res.pdin > 50) {
+          pdinTag.className = 'tag tag-warn';
+          pdinTag.textContent = 'Exceso (> 50 mca)';
+        } else {
+          pdinTag.className = 'tag tag-ok';
+          pdinTag.textContent = 'Cumple OS.050';
+        }
+      }
+
+      if (pestEl) {
+        pestEl.textContent = res.pest.toFixed(2) + ' mca';
+        pestEl.className = 'kpi-value ' + (res.pest > 50 ? 'is-err' : (res.pest < 10 ? 'is-warn' : 'is-ok'));
+      }
+      if (pestTag) {
+        if (res.pest > 50) {
+          pestTag.className = 'tag tag-err';
+          pestTag.textContent = 'Supera 50 mca';
+        } else if (res.pest < 10) {
+          pestTag.className = 'tag tag-err';
+          pestTag.textContent = 'Carga estática < 10';
+        } else {
+          pestTag.className = 'tag tag-ok';
+          pestTag.textContent = 'Cumple ≤ 50 mca';
+        }
+      }
+
+      if (velEl) {
+        velEl.textContent = res.vel.toFixed(2) + ' m/s';
+        velEl.className = 'kpi-value ' + (res.vel > 3.0 ? 'is-err' : (res.vel < 0.6 ? 'is-warn' : 'is-ok'));
+      }
+      if (velTag) {
+        if (res.vel > 3.0) {
+          velTag.className = 'tag tag-err';
+          velTag.textContent = 'Erosión (> 3.0 m/s)';
+        } else if (res.vel < 0.6) {
+          velTag.className = 'tag tag-warn';
+          velTag.textContent = 'Baja (< 0.60 m/s)';
+        } else {
+          velTag.className = 'tag tag-ok';
+          velTag.textContent = 'Óptima 0.6–3.0 m/s';
+        }
+      }
+
+      if (hfEl) hfEl.textContent = res.hf.toFixed(2) + ' m';
+      if (slopeEl) slopeEl.textContent = 'J = ' + (res.slope * 1000).toFixed(2) + ' m/km';
+
+      // AI Diagnosis Box
+      const aiBox = document.getElementById('w-ai-box');
+      const aiText = document.getElementById('w-ai-text');
+      const aiBtn = document.getElementById('w-ai-apply-btn');
+      const bestD = findBestWaterDiam();
+      const issues = [];
+      if (res.pdin < 10) issues.push(`Presión dinámica de ${res.pdin.toFixed(1)} mca inferior al mínimo normativo (10 mca) por pérdida de carga de ${res.hf.toFixed(1)} m.`);
+      if (res.pest > 50) issues.push(`Presión estática de ${res.pest.toFixed(1)} mca excede el límite OS.050 (50 mca), generando riesgo de rotura en conexiones domiciliarias.`);
+      if (res.vel > 3.0) issues.push(`Velocidad de ${res.vel.toFixed(2)} m/s supera 3.0 m/s recomendados para PVC/HDPE.`);
+      if (res.vel < 0.6) issues.push(`Velocidad baja (${res.vel.toFixed(2)} m/s) favorece deposición de sedimentos.`);
+
+      if (aiBox && aiText && aiBtn) {
+        if (issues.length === 0) {
+          aiBox.className = 'notice is-ok';
+          aiText.textContent = `Diseño verificado: El tramo Ø ${w.diam} mm cumple simultáneamente la envolvente de presiones OS.050 (10–50 mca) y velocidad de operación (${res.vel.toFixed(2)} m/s).`;
+          aiBtn.disabled = true;
+          aiBtn.textContent = 'Parámetros óptimos';
+        } else if (res.pest > 50) {
+          aiBox.className = 'notice is-err';
+          aiText.textContent = issues.join(' ') + ` Sugerencia IA: Instalar Cámara Rompe Presión Tipo 7 (CRP-T7) o VRP para fijar carga piezométrica en +38 mca sobre el nodo.`;
+          aiBtn.disabled = false;
+          aiBtn.textContent = 'Simular CRP-T7';
+        } else {
+          aiBox.className = 'notice is-err';
+          aiText.textContent = issues.join(' ') + ` Sugerencia IA: Incrementar diámetro comercial a Ø ${bestD} mm para reducir pérdida por fricción (hf) y estabilizar la presión dinámica.`;
+          aiBtn.disabled = false;
+          aiBtn.textContent = 'Aplicar Ø ' + bestD + ' mm';
+        }
+      }
+
+      // Normative Check Matrix
+      const checksEl = document.getElementById('w-checks');
+      if (checksEl) {
+        const rows = [
+          {
+            label: `Presión Dinámica Mínima (≥ 10.0 mca)`,
+            val: `${res.pdin.toFixed(2)} mca`,
+            ok: res.pdin >= 10
+          },
+          {
+            label: `Presión Estática Máxima (≤ 50.0 mca)`,
+            val: `${res.pest.toFixed(2)} mca`,
+            ok: res.pest <= 50
+          },
+          {
+            label: `Velocidad Máxima Admisible PVC/HDPE (≤ 3.00 m/s)`,
+            val: `${res.vel.toFixed(2)} m/s`,
+            ok: res.vel <= 3.0
+          },
+          {
+            label: `Autolimpieza / No sedimentación (≥ 0.60 m/s)`,
+            val: `${res.vel.toFixed(2)} m/s`,
+            ok: res.vel >= 0.6
+          }
+        ];
+        checksEl.innerHTML = rows.map(function (r) {
+          return `<div class="check-item">
+            <span style="font-size:0.875rem;">${r.label}</span>
+            <span style="display:flex;align-items:center;gap:var(--space-sm);">
+              <span class="mono-num" style="font-size:0.875rem;">${r.val}</span>
+              <span class="tag ${r.ok ? 'tag-ok' : 'tag-err'}">${r.ok ? 'CUMPLE' : 'FALLA'}</span>
+            </span>
+          </div>`;
+        }).join('');
+      }
+
+      renderWaterSvg(w, res);
+    }
+
+    function renderWaterSvg(w, res) {
+      const svg = document.getElementById('w-svg');
+      if (!svg) return;
+
+      const minElev = Math.min(w.znodo, w.zres) - 18;
+      const maxElev = Math.max(w.zres + 12, w.znodo + 62);
+      const yMap = function (z) {
+        const padTop = 28;
+        const padBot = 248;
+        const norm = (z - minElev) / (maxElev - minElev);
+        return padBot - norm * (padBot - padTop);
+      };
+
+      const x0 = 95;
+      const x1 = 620;
+      const yRes = yMap(w.zres);
+      const yTer0 = yMap(w.zres - 6);
+      const yTer1 = yMap(w.znodo);
+      const yPiezoEnd = yMap(w.zres - res.hf);
+      const yBandTop = yMap(w.znodo + 50);
+      const yBandBot = yMap(w.znodo + 10);
+      const piezoColor = (res.pdin < 10 || res.pest > 50) ? 'var(--error)' : 'var(--primary)';
+
+      svg.innerHTML = `
+        <rect x="0" y="0" width="720" height="290" fill="var(--background)"></rect>
+        <!-- Normative 10-50 mca Zone at Node -->
+        <rect x="${x1 - 55}" y="${yBandTop}" width="110" height="${Math.max(4, yBandBot - yBandTop)}" fill="var(--positive-container)" stroke="var(--positive)" stroke-dasharray="4 3" stroke-width="1"></rect>
+        <text x="${x1}" y="${yBandTop - 6}" text-anchor="middle" font-family="var(--font-label)" font-size="10" fill="var(--positive)">BANDA 10–50 MCA</text>
+
+        <!-- Reservoir -->
+        <rect x="38" y="${yRes - 10}" width="57" height="${Math.max(24, yTer0 - yRes + 16)}" fill="var(--surface-container-high)" stroke="var(--on-surface)" stroke-width="1.5"></rect>
+        <rect x="40" y="${yRes}" width="53" height="${Math.max(12, yTer0 - yRes + 4)}" fill="var(--primary-container)"></rect>
+        <text x="66" y="${yRes - 16}" text-anchor="middle" font-family="var(--font-label)" font-size="10" fill="var(--on-surface)">RESERVORIO</text>
+        <text x="66" y="${yRes + 14}" text-anchor="middle" font-family="var(--font-label)" font-size="10" fill="var(--on-primary-container)">${w.zres.toFixed(1)}m</text>
+
+        <!-- Terrain & Pipe -->
+        <polygon points="${x0},${yTer0} ${x1},${yTer1} ${x1},268 ${x0},268" fill="var(--surface-container)"></polygon>
+        <line x1="${x0}" y1="${yTer0}" x2="${x1}" y2="${yTer1}" stroke="var(--on-surface-variant)" stroke-width="2"></line>
+        <line x1="${x0}" y1="${yTer0 + 6}" x2="${x1}" y2="${yTer1 + 6}" stroke="var(--on-surface)" stroke-width="4"></line>
+
+        <!-- Static Line -->
+        <line x1="${x0}" y1="${yRes}" x2="${x1}" y2="${yRes}" stroke="var(--data-context)" stroke-width="1.5" stroke-dasharray="6 4"></line>
+        <text x="${(x0 + x1) / 2}" y="${yRes - 6}" text-anchor="middle" font-family="var(--font-label)" font-size="10" fill="var(--on-surface-variant)">Línea Estática (${w.zres.toFixed(1)} m.s.n.m.)</text>
+
+        <!-- Dynamic Piezometric Line -->
+        <line x1="${x0}" y1="${yRes}" x2="${x1}" y2="${yPiezoEnd}" stroke="${piezoColor}" stroke-width="2.5"></line>
+        <circle cx="${x1}" cy="${yPiezoEnd}" r="5" fill="${piezoColor}"></circle>
+
+        <!-- Dynamic Pressure Arrow -->
+        <line x1="${x1}" y1="${yPiezoEnd}" x2="${x1}" y2="${yTer1}" stroke="${piezoColor}" stroke-width="2"></line>
+        <text x="${x1 + 12}" y="${(yPiezoEnd + yTer1) / 2}" font-family="var(--font-label)" font-size="11" font-weight="600" fill="${piezoColor}">Pdin = ${res.pdin.toFixed(1)} mca</text>
+        <text x="${x1 + 12}" y="${(yPiezoEnd + yTer1) / 2 + 14}" font-family="var(--font-label)" font-size="10" fill="var(--on-surface-variant)">hf = ${res.hf.toFixed(1)} m</text>
+
+        <!-- Node Marker -->
+        <circle cx="${x1}" cy="${yTer1}" r="5" fill="var(--on-surface)"></circle>
+        <text x="${x1}" y="${yTer1 + 20}" text-anchor="middle" font-family="var(--font-label)" font-size="10" fill="var(--on-surface)">NODO Z₁=${w.znodo.toFixed(1)}m · L=${w.len}m</text>
+      `;
+    }
+
+    /* =======================================================================
+       MODULE 1B: ALCANTARILLADO OS.070 (MANNING)
+       ======================================================================= */
+    function computeSewerHydraulics(s) {
+      const D = s.diam / 1000;
+      const S0 = s.slope / 1000;
+      const n = s.n;
+      const qTotalLps = s.q * (1 + s.infil / 100);
+      const Q = qTotalLps / 1000;
+
+      const areaFull = Math.PI * D * D / 4;
+      const rhFull = D / 4;
+      const qFull = (1 / n) * areaFull * Math.pow(rhFull, 2 / 3) * Math.sqrt(S0);
+      const qFullLps = qFull * 1000;
+
+      // Solve Manning circular partially full via bisection on theta in [0.05, 2*PI]
+      // Note: maximum Q occurs around theta ~ 5.28 rad (~0.94 D). We cap at full if Q > qMax
+      function calcTheta(th) {
+        const A = (D * D / 8) * (th - Math.sin(th));
+        const P = (D / 2) * th;
+        const Rh = P > 0 ? A / P : 0;
+        const Qc = (1 / n) * A * Math.pow(Rh, 2 / 3) * Math.sqrt(S0);
+        return { A, P, Rh, Qc };
+      }
+
+      const maxFlowState = calcTheta(5.278);
+      let theta = 5.278;
+      let surcharged = false;
+
+      if (Q >= maxFlowState.Qc) {
+        theta = 2 * Math.PI;
+        surcharged = true;
+      } else {
+        let lo = 0.05;
+        let hi = 5.278;
+        for (let iter = 0; iter < 48; iter++) {
+          const mid = (lo + hi) / 2;
+          const st = calcTheta(mid);
+          if (st.Qc < Q) lo = mid;
+          else hi = mid;
+        }
+        theta = (lo + hi) / 2;
+      }
+
+      const st = calcTheta(theta);
+      const dd = surcharged ? 1.0 : 0.5 * (1 - Math.cos(theta / 2));
+      const vel = st.A > 0 ? Q / st.A : 0;
+      const tau = 9810 * st.Rh * S0; // Pascals
+
+      return { qTotalLps, qFullLps, dd, vel, tau, surcharged };
+    }
+
+    function applySewerPreset(key) {
+      appState.sewer.preset = key;
+      if (key === 'flat') {
+        Object.assign(appState.sewer, { diam: 200, n: 0.013, slope: 2.0, q: 14, infil: 10 });
+      } else if (key === 'surge') {
+        Object.assign(appState.sewer, { diam: 200, n: 0.010, slope: 4.5, q: 36, infil: 55 });
+      } else {
+        Object.assign(appState.sewer, { diam: 250, n: 0.010, slope: 6.5, q: 28, infil: 15 });
+      }
+      syncAllControlsFromState();
+      renderSewerModule();
+      scheduleSaveState();
+    }
+
+    function syncSewerSlider(field, val) {
+      const numVal = parseFloat(val);
+      if (isNaN(numVal)) return;
+      appState.sewer[field] = numVal;
+      appState.sewer.preset = '';
+      setElValue('s-' + field + '-num', numVal);
+      updatePresetActiveButtons();
+      renderSewerModule();
+      scheduleSaveState();
+    }
+
+    function syncSewerNumber(field, val) {
+      const numVal = parseFloat(val);
+      if (isNaN(numVal)) return;
+      appState.sewer[field] = numVal;
+      appState.sewer.preset = '';
+      setElValue('s-' + field + '-range', numVal);
+      updatePresetActiveButtons();
+      renderSewerModule();
+      scheduleSaveState();
+    }
+
+    function updateSewerField(field, val) {
+      const numVal = parseFloat(val);
+      if (isNaN(numVal)) return;
+      appState.sewer[field] = numVal;
+      appState.sewer.preset = '';
+      updatePresetActiveButtons();
+      renderSewerModule();
+      scheduleSaveState();
+    }
+
+    function findBestSewerConfig() {
+      const diams = [200, 250, 315, 355, 400, 500];
+      const baseD = appState.sewer.diam;
+      // First check if adjusting diameter alone works, else increase slope
+      for (let i = 0; i < diams.length; i++) {
+        if (diams[i] < baseD && computeSewerHydraulics(appState.sewer).dd > 0.75) continue;
+        for (let sl = appState.sewer.slope; sl <= 30; sl += 0.5) {
+          const test = Object.assign({}, appState.sewer, { diam: diams[i], slope: sl });
+          const r = computeSewerHydraulics(test);
+          if (r.vel >= 0.60 && r.vel <= 5.0 && r.dd <= 0.75 && r.tau >= 1.0) {
+            return { diam: diams[i], slope: sl };
+          }
+        }
+      }
+      return { diam: 315, slope: 7.0 };
+    }
+
+    function applySewerAiFix() {
+      const opt = findBestSewerConfig();
+      appState.sewer.diam = opt.diam;
+      appState.sewer.slope = opt.slope;
+      appState.sewer.preset = '';
+      syncAllControlsFromState();
+      renderSewerModule();
+      scheduleSaveState();
+      showFeedback(`Colector optimizado por IA: Ø ${opt.diam} mm con pendiente ${opt.slope.toFixed(1)} ‰ (cumple OS.070).`);
+    }
+
+    function renderSewerModule() {
+      const s = appState.sewer;
+      const res = computeSewerHydraulics(s);
+
+      const velEl = document.getElementById('s-kpi-vel');
+      const velTag = document.getElementById('s-tag-vel');
+      const ddEl = document.getElementById('s-kpi-dd');
+      const ddTag = document.getElementById('s-tag-dd');
+      const tauEl = document.getElementById('s-kpi-tau');
+      const tauTag = document.getElementById('s-tag-tau');
+      const qtotEl = document.getElementById('s-kpi-qtot');
+      const qfullEl = document.getElementById('s-kpi-qfull');
+
+      if (velEl) {
+        velEl.textContent = res.vel.toFixed(2) + ' m/s';
+        velEl.className = 'kpi-value ' + (res.vel < 0.60 || res.vel > 5.0 ? 'is-err' : 'is-ok');
+      }
+      if (velTag) {
+        if (res.vel < 0.60) {
+          velTag.className = 'tag tag-err';
+          velTag.textContent = 'Sedimenta (< 0.60 m/s)';
+        } else if (res.vel > 5.0) {
+          velTag.className = 'tag tag-err';
+          velTag.textContent = 'Erosión (> 5.0 m/s)';
+        } else {
+          velTag.className = 'tag tag-ok';
+          velTag.textContent = 'Autolimpieza OK';
+        }
+      }
+
+      if (ddEl) {
+        ddEl.textContent = res.surcharged ? '1.00 (Lleno)' : res.dd.toFixed(2);
+        ddEl.className = 'kpi-value ' + (res.dd > 0.75 ? 'is-err' : 'is-ok');
+      }
+      if (ddTag) {
+        ddTag.className = 'tag ' + (res.dd > 0.75 ? 'tag-err' : 'tag-ok');
+        ddTag.textContent = res.dd > 0.75 ? 'Excede 0.75 D' : 'Tirante ≤ 0.75 D';
+      }
+
+      if (tauEl) {
+        tauEl.textContent = res.tau.toFixed(2) + ' Pa';
+        tauEl.className = 'kpi-value ' + (res.tau < 1.0 ? 'is-err' : 'is-ok');
+      }
+      if (tauTag) {
+        tauTag.className = 'tag ' + (res.tau < 1.0 ? 'tag-err' : 'tag-ok');
+        tauTag.textContent = res.tau < 1.0 ? 'Bajo (< 1.0 Pa)' : 'Arrastre ≥ 1.0 Pa';
+      }
+
+      if (qtotEl) qtotEl.textContent = res.qTotalLps.toFixed(1) + ' L/s';
+      if (qfullEl) qfullEl.textContent = 'Q_lleno = ' + res.qFullLps.toFixed(1) + ' L/s';
+
+      const aiBox = document.getElementById('s-ai-box');
+      const aiText = document.getElementById('s-ai-text');
+      const aiBtn = document.getElementById('s-ai-apply-btn');
+      const opt = findBestSewerConfig();
+      const fails = [];
+      if (res.vel < 0.60) fails.push(`Velocidad de ${res.vel.toFixed(2)} m/s por debajo de 0.60 m/s (riesgo de sedimentación de sólidos).`);
+      if (res.tau < 1.0) fails.push(`Tensión tractiva ${res.tau.toFixed(2)} Pa inferior a 1.0 Pa.`);
+      if (res.dd > 0.75) fails.push(`Tirante d/D = ${res.dd.toFixed(2)} excede el 75% de aireación libre, agravado por +${s.infil}% de entradas ilícitas.`);
+
+      if (aiBox && aiText && aiBtn) {
+        if (fails.length === 0) {
+          aiBox.className = 'notice is-ok';
+          aiText.textContent = `Colector Ø ${s.diam} mm al ${s.slope.toFixed(1)}‰ conforme con Norma OS.070: garantiza autolimpieza y cámara de aireación superior.`;
+          aiBtn.disabled = true;
+          aiBtn.textContent = 'Cumple OS.070';
+        } else {
+          aiBox.className = 'notice is-err';
+          aiText.textContent = fails.join(' ') + ` Sugerencia IA: Ajustar sección a Ø ${opt.diam} mm y pendiente ${opt.slope.toFixed(1)}‰ para restablecer régimen autolimpiante y d/D ≤ 0.75.`;
+          aiBtn.disabled = false;
+          aiBtn.textContent = `Aplicar Ø ${opt.diam} mm · ${opt.slope.toFixed(1)}‰`;
+        }
+      }
+
+      const checksEl = document.getElementById('s-checks');
+      if (checksEl) {
+        const rows = [
+          { label: `Velocidad de Autolimpieza (≥ 0.60 m/s)`, val: `${res.vel.toFixed(2)} m/s`, ok: res.vel >= 0.60 },
+          { label: `Velocidad Máxima Admisible (≤ 5.00 m/s)`, val: `${res.vel.toFixed(2)} m/s`, ok: res.vel <= 5.00 },
+          { label: `Relación de Tirante Máximo (d/D ≤ 0.75)`, val: `${res.dd.toFixed(2)}`, ok: res.dd <= 0.75 },
+          { label: `Tensión Tractiva Mínima (τ ≥ 1.00 Pa)`, val: `${res.tau.toFixed(2)} Pa`, ok: res.tau >= 1.00 }
+        ];
+        checksEl.innerHTML = rows.map(function (r) {
+          return `<div class="check-item">
+            <span style="font-size:0.875rem;">${r.label}</span>
+            <span style="display:flex;align-items:center;gap:var(--space-sm);">
+              <span class="mono-num" style="font-size:0.875rem;">${r.val}</span>
+              <span class="tag ${r.ok ? 'tag-ok' : 'tag-err'}">${r.ok ? 'CUMPLE' : 'FALLA'}</span>
+            </span>
+          </div>`;
+        }).join('');
+      }
+
+      renderSewerSvg(s, res);
+    }
+
+    function renderSewerSvg(s, res) {
+      const svg = document.getElementById('s-svg');
+      if (!svg) return;
+
+      const cx = 185;
+      const cy = 148;
+      const R = 95;
+      const waterTopY = cy + R - (2 * R * res.dd);
+      const limit75Y = cy + R - (2 * R * 0.75);
+      const fillColor = res.dd > 0.75 ? 'var(--error-container)' : 'var(--primary-container)';
+      const strokeColor = res.dd > 0.75 ? 'var(--error)' : 'var(--primary)';
+
+      // Right side: Q/Qfull vs d/D mini chart
+      const gx = 370;
+      const gy = 48;
+      const gw = 290;
+      const gh = 190;
+      const curvePts = [];
+      for (let i = 0; i <= 20; i++) {
+        const frac = i / 20;
+        const th = 2 * Math.acos(1 - 2 * frac);
+        const aFrac = (th - Math.sin(th)) / (2 * Math.PI);
+        const pFrac = th / (2 * Math.PI);
+        const qFrac = pFrac > 0 ? aFrac * Math.pow(aFrac / pFrac, 2 / 3) : 0;
+        const px = gx + Math.min(1.08, qFrac) / 1.1 * gw;
+        const py = gy + gh - frac * gh;
+        curvePts.push(px.toFixed(1) + ',' + py.toFixed(1));
+      }
+      const qRatio = Math.min(1.08, res.qTotalLps / Math.max(0.1, res.qFullLps));
+      const dotX = gx + (qRatio / 1.1) * gw;
+      const dotY = gy + gh - res.dd * gh;
+      const limitChartY = gy + gh - 0.75 * gh;
+
+      svg.innerHTML = `
+        <rect x="0" y="0" width="720" height="290" fill="var(--background)"></rect>
+        <defs>
+          <clipPath id="pipe-clip">
+            <circle cx="${cx}" cy="${cy}" r="${R - 4}"></circle>
+          </clipPath>
+        </defs>
+
+        <!-- Pipe Outer & Inner -->
+        <circle cx="${cx}" cy="${cy}" r="${R}" fill="var(--surface-container-high)" stroke="var(--on-surface)" stroke-width="2"></circle>
+        <circle cx="${cx}" cy="${cy}" r="${R - 4}" fill="var(--background)" stroke="var(--outline-variant)" stroke-width="1"></circle>
+
+        <!-- Water Fill Clipped -->
+        <rect x="${cx - R}" y="${waterTopY}" width="${2 * R}" height="${2 * R}" fill="${fillColor}" clip-path="url(#pipe-clip)"></rect>
+        <line x1="${cx - R}" y1="${waterTopY}" x2="${cx + R}" y2="${waterTopY}" stroke="${strokeColor}" stroke-width="2.5" clip-path="url(#pipe-clip)"></line>
+
+        <!-- 0.75 D Limit Line -->
+        <line x1="${cx - R - 14}" y1="${limit75Y}" x2="${cx + R + 14}" y2="${limit75Y}" stroke="var(--error)" stroke-width="1.5" stroke-dasharray="5 3"></line>
+        <text x="${cx + R + 18}" y="${limit75Y + 4}" font-family="var(--font-label)" font-size="10" fill="var(--error)">0.75 D</text>
+
+        <!-- Diameter & Depth labels -->
+        <text x="${cx}" y="30" text-anchor="middle" font-family="var(--font-label)" font-size="11" fill="var(--on-surface)">SECCIÓN Ø ${s.diam} mm (n=${s.n.toFixed(3)})</text>
+        <text x="${cx}" y="${cy + R + 24}" text-anchor="middle" font-family="var(--font-label)" font-size="11" fill="${strokeColor}">d/D = ${res.dd.toFixed(2)} · v = ${res.vel.toFixed(2)} m/s</text>
+
+        <!-- Capacity Curve Chart -->
+        <rect x="${gx}" y="${gy}" width="${gw}" height="${gh}" fill="var(--surface-container)" stroke="var(--outline-variant)" stroke-width="1"></rect>
+        <line x1="${gx}" y1="${limitChartY}" x2="${gx + gw}" y2="${limitChartY}" stroke="var(--error)" stroke-width="1" stroke-dasharray="4 3"></line>
+        <polyline points="${curvePts.join(' ')}" fill="none" stroke="var(--on-surface)" stroke-width="2"></polyline>
+        <circle cx="${dotX}" cy="${dotY}" r="6" fill="${strokeColor}"></circle>
+
+        <text x="${gx}" y="${gy - 10}" font-family="var(--font-label)" font-size="10" fill="var(--on-surface-variant)">CURVA RELACIÓN d/D vs Q/Q_lleno</text>
+        <text x="${gx + gw / 2}" y="${gy + gh + 20}" text-anchor="middle" font-family="var(--font-label)" font-size="10" fill="var(--on-surface-variant)">Q / Q_lleno = ${(res.qTotalLps / Math.max(0.1, res.qFullLps)).toFixed(2)}</text>
+        <text x="${gx - 8}" y="${limitChartY + 3}" text-anchor="end" font-family="var(--font-label)" font-size="9" fill="var(--error)">0.75</text>
+      `;
+    }
+
+    /* =======================================================================
+       MODULE 2: SFD & CWIS SIMULATOR
+       ======================================================================= */
+    function applySfdPreset(key) {
+      appState.sfd.preset = key;
+      if (key === 'traditional') {
+        Object.assign(appState.sfd, { sewer: 60, ubs: 15, pit: 15, open: 10, netEff: 70, ptarEff: 45, fsmEff: 35, waterTable: 'high' });
+      } else if (key === 'rural') {
+        Object.assign(appState.sfd, { sewer: 10, ubs: 30, pit: 45, open: 15, netEff: 80, ptarEff: 30, fsmEff: 25, waterTable: 'high' });
+      } else {
+        Object.assign(appState.sfd, { sewer: 52, ubs: 38, pit: 10, open: 0, netEff: 95, ptarEff: 92, fsmEff: 88, waterTable: 'low' });
+      }
+      syncAllControlsFromState();
+      renderSfdModule();
+      scheduleSaveState();
+    }
+
+    function rebalanceSfdShares(changedKey, newVal) {
+      const keys = ['sewer', 'ubs', 'pit', 'open'];
+      const clamped = Math.max(0, Math.min(100, Math.round(newVal)));
+      const remaining = 100 - clamped;
+      const others = keys.filter(function (k) { return k !== changedKey; });
+      const sumOthers = others.reduce(function (acc, k) { return acc + appState.sfd[k]; }, 0);
+
+      appState.sfd[changedKey] = clamped;
+      if (sumOthers === 0) {
+        const share = Math.floor(remaining / others.length);
+        let rem = remaining - share * others.length;
+        others.forEach(function (k) {
+          appState.sfd[k] = share + (rem > 0 ? 1 : 0);
+          if (rem > 0) rem -= 1;
+        });
+      } else {
+        let assigned = 0;
+        others.forEach(function (k, idx) {
+          if (idx === others.length - 1) {
+            appState.sfd[k] = Math.max(0, remaining - assigned);
+          } else {
+            const v = Math.round((appState.sfd[k] / sumOthers) * remaining);
+            appState.sfd[k] = v;
+            assigned += v;
+          }
+        });
+      }
+      appState.sfd.preset = '';
+      syncAllControlsFromState();
+      renderSfdModule();
+      scheduleSaveState();
+    }
+
+    function syncSfdShare(key, val) {
+      const n = parseFloat(val);
+      if (isNaN(n)) return;
+      rebalanceSfdShares(key, n);
+    }
+
+    function syncSfdShareNum(key, val) {
+      const n = parseFloat(val);
+      if (isNaN(n)) return;
+      rebalanceSfdShares(key, n);
+    }
+
+    function syncSfdParam(key, val) {
+      const n = parseFloat(val);
+      if (isNaN(n)) return;
+      appState.sfd[key] = n;
+      appState.sfd.preset = '';
+      setElValue(key === 'netEff' ? 'sfd-net-eff' : (key === 'ptarEff' ? 'sfd-ptar-eff' : 'sfd-fsm-eff'), n);
+      updatePresetActiveButtons();
+      renderSfdModule();
+      scheduleSaveState();
+    }
+
+    function syncSfdParamNum(key, val) {
+      const n = parseFloat(val);
+      if (isNaN(n)) return;
+      appState.sfd[key] = n;
+      appState.sfd.preset = '';
+      setElValue(key === 'netEff' ? 'sfd-net-range' : (key === 'ptarEff' ? 'sfd-ptar-range' : 'sfd-fsm-range'), n);
+      updatePresetActiveButtons();
+      renderSfdModule();
+      scheduleSaveState();
+    }
+
+    function updateSfdSelect(key, val) {
+      appState.sfd[key] = val;
+      appState.sfd.preset = '';
+      updatePresetActiveButtons();
+      renderSfdModule();
+      scheduleSaveState();
+    }
+
+    function applyCwisOptimization() {
+      applySfdPreset('cwis');
+      showFeedback('Paquete CWIS aplicado: Rehabilitación de redes, PTAR operativa, UBS con biodigestor y vaciado FSM formal.');
+    }
+
+    function computeSfdFlows(d) {
+      // Sewer flow splits into contained transport vs leaking
+      const sewerTransported = d.sewer * (d.netEff / 100);
+      const sewerLeaked = d.sewer - sewerTransported;
+      const sewerSafe = sewerTransported * (d.ptarEff / 100);
+      const sewerUntreated = sewerTransported - sewerSafe;
+
+      // UBS Biodigester: 55% treated safely onsite (liquids/infiltration), 45% sludge requires FSM emptying+treatment
+      const ubsOnsiteSafe = d.ubs * 0.55;
+      const ubsSludge = d.ubs * 0.45;
+      const ubsFsmSafe = ubsSludge * (d.fsmEff / 100);
+      const ubsFsmUnsafe = ubsSludge - ubsFsmSafe;
+
+      // Pit latrine: If water table is HIGH, groundwater contamination makes it unsafe; if LOW, 60% contained safely onsite + 40% needs FSM
+      let pitSafe = 0;
+      let pitUnsafe = d.pit;
+      if (d.waterTable === 'low') {
+        const pitOnsite = d.pit * 0.60;
+        const pitSludge = d.pit * 0.40;
+        const pitFsmSafe = pitSludge * (d.fsmEff / 100);
+        pitSafe = pitOnsite + pitFsmSafe;
+        pitUnsafe = d.pit - pitSafe;
+      }
+
+      const openUnsafe = d.open;
+      const totalSafe = sewerSafe + ubsOnsiteSafe + ubsFsmSafe + pitSafe;
+      const totalUnsafe = Math.max(0, 100 - totalSafe);
+
+      // CWIS Pillars (0-100)
+      const pEquidad = Math.min(100, Math.round(100 - d.open * 2.5));
+      const pAgnostic = Math.min(100, Math.round(45 + Math.min(d.ubs, 40) * 1.1 + (d.sewer > 15 ? 12 : 0)));
+      const pSalud = Math.round(totalSafe);
+      const pCircular = Math.round(0.65 * sewerSafe + 0.85 * (ubsFsmSafe + ubsOnsiteSafe * 0.5));
+      const cwisIndex = Math.round((pEquidad + pAgnostic + pSalud + pCircular) / 4);
+
+      return {
+        sewerTransported, sewerLeaked, sewerSafe, sewerUntreated,
+        ubsOnsiteSafe, ubsFsmSafe, ubsFsmUnsafe,
+        pitSafe, pitUnsafe, openUnsafe,
+        totalSafe, totalUnsafe,
+        pEquidad, pAgnostic, pSalud, pCircular, cwisIndex,
+        reusePotential: pCircular
+      };
+    }
+
+    function renderSfdModule() {
+      const d = appState.sfd;
+      const f = computeSfdFlows(d);
+
+      const safeEl = document.getElementById('sfd-kpi-safe');
+      const safeTag = document.getElementById('sfd-tag-safe');
+      const unsafeEl = document.getElementById('sfd-kpi-unsafe');
+      const cwisEl = document.getElementById('sfd-kpi-cwis');
+      const cwisTag = document.getElementById('sfd-tag-cwis');
+      const reuseEl = document.getElementById('sfd-kpi-reuse');
+
+      if (safeEl) {
+        safeEl.textContent = f.totalSafe.toFixed(1) + '%';
+        safeEl.className = 'kpi-value ' + (f.totalSafe >= 75 ? 'is-ok' : (f.totalSafe >= 45 ? 'is-warn' : 'is-err'));
+      }
+      if (safeTag) {
+        safeTag.className = 'tag ' + (f.totalSafe >= 75 ? 'tag-ok' : (f.totalSafe >= 45 ? 'tag-warn' : 'tag-err'));
+        safeTag.textContent = f.totalSafe >= 75 ? 'Gestión Avanzada' : (f.totalSafe >= 45 ? 'Cobertura Parcial' : 'Riesgo Biológico');
+      }
+      if (unsafeEl) unsafeEl.textContent = f.totalUnsafe.toFixed(1) + '%';
+      if (cwisEl) cwisEl.textContent = f.cwisIndex + ' / 100';
+      if (cwisTag) {
+        cwisTag.className = 'tag ' + (f.cwisIndex >= 75 ? 'tag-ok' : (f.cwisIndex >= 50 ? 'tag-warn' : 'tag-err'));
+        cwisTag.textContent = f.cwisIndex >= 75 ? 'Enfoque CWIS Consolidado' : 'Enfoque Centralizado / Brecha';
+      }
+      if (reuseEl) reuseEl.textContent = f.reusePotential.toFixed(1) + '%';
+
+      // AI Diagnosis
+      const aiBox = document.getElementById('sfd-ai-box');
+      const aiText = document.getElementById('sfd-ai-text');
+      if (aiBox && aiText) {
+        const biggestLeak = Math.max(f.sewerLeaked, f.sewerUntreated, f.pitUnsafe, f.openUnsafe);
+        let bottleneck = '';
+        if (biggestLeak === f.sewerUntreated && f.sewerUntreated > 5) {
+          bottleneck = `El mayor flujo inseguro (${f.sewerUntreated.toFixed(1)}%) proviene de redes de alcantarillado que descargan sin tratamiento efectivo en PTAR ("flush and forget"). Priorizar rehabilitación de PTAR antes de ampliar redes.`;
+        } else if (biggestLeak === f.sewerLeaked && f.sewerLeaked > 5) {
+          bottleneck = `Se pierde ${f.sewerLeaked.toFixed(1)}% de aguas residuales por roturas y aniegos en colectores secundarios. Requiere reposición de tramos colapsados.`;
+        } else if (biggestLeak === f.pitUnsafe && f.pitUnsafe > 5) {
+          bottleneck = `El ${f.pitUnsafe.toFixed(1)}% de excretas en pozos ciegos contamina el acuífero por napa freática alta. El MVCS/PIASAR recomienda sustituir por UBS con arrastre hidráulico y biodigestor.`;
+        } else {
+          bottleneck = `Sistema balanceado con ${f.totalSafe.toFixed(1)}% de gestión segura y potencial de economía circular (reuso agrícola y biosólidos) del ${f.reusePotential.toFixed(1)}%.`;
+        }
+        aiBox.className = 'notice ' + (f.totalSafe >= 75 ? 'is-ok' : 'is-warn');
+        aiText.textContent = bottleneck;
+      }
+
+      // CWIS Pillars
+      const pillarsEl = document.getElementById('cwis-pillars');
+      if (pillarsEl) {
+        const pillars = [
+          { name: 'Equidad e Inclusión (Sin exclusión)', val: f.pEquidad },
+          { name: 'Agnosticismo Tecnológico (Híbrido)', val: f.pAgnostic },
+          { name: 'Eliminación Exposición Patógenos', val: f.pSalud },
+          { name: 'Economía Circular (Reuso / Biogás)', val: f.pCircular }
+        ];
+        pillarsEl.innerHTML = pillars.map(function (p) {
+          const cls = p.val >= 70 ? 'is-ok' : (p.val >= 45 ? 'is-warn' : 'is-err');
+          return `<div class="pillar-card">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;">
+              <span style="font-size:0.8125rem;font-weight:500;">${p.name}</span>
+              <span class="mono-num" style="font-size:0.875rem;font-weight:600;">${p.val}%</span>
+            </div>
+            <div class="meter-track"><div class="meter-fill ${cls}" style="width:${p.val}%"></div></div>
+          </div>`;
+        }).join('');
+      }
+
+      renderSfdSvg(d, f);
+    }
+
+    function renderSfdSvg(d, f) {
+      const svg = document.getElementById('sfd-svg');
+      if (!svg) return;
+
+      const topY = 54;
+      const totalH = 260;
+      const scale = totalH / 100;
+
+      // Helper for smooth cubic Sankey ribbon
+      function ribbon(x1, y1, h1, x2, y2, h2, fill, opacity) {
+        if (h1 < 0.8 && h2 < 0.8) return '';
+        const mx = (x1 + x2) / 2;
+        const path = `M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2} L ${x2} ${y2 + h2} C ${mx} ${y2 + h2}, ${mx} ${y1 + h1}, ${x1} ${y1 + h1} Z`;
+        return `<path d="${path}" fill="${fill}" fill-opacity="${opacity}"></path>`;
+      }
+
+      // Column X positions
+      const col1X = 16;
+      const col2X = 275;
+      const col3X = 530;
+      const colW = 135;
+
+      // Left column blocks
+      const hSewer = d.sewer * scale;
+      const hUbs = d.ubs * scale;
+      const hPit = d.pit * scale;
+      const hOpen = d.open * scale;
+
+      const ySewer = topY;
+      const yUbs = ySewer + hSewer;
+      const yPit = yUbs + hUbs;
+      const yOpen = yPit + hPit;
+
+      // Right final destination blocks (Top = SAFE, Bottom = UNSAFE)
+      const hSafeTotal = f.totalSafe * scale;
+      const hUnsafeTotal = f.totalUnsafe * scale;
+      const ySafe = topY;
+      const yUnsafe = topY + hSafeTotal;
+
+      // Middle stage blocks (grouped visually: Transported/Contained vs Leaked/Direct)
+      const safeMidH = (f.sewerSafe + f.ubsOnsiteSafe + f.ubsFsmSafe + f.pitSafe) * scale;
+      const unsafeMidH = totalH - safeMidH;
+
+      // Draw ribbons cleanly from Col1 -> Col2 -> Col3
+      let paths = '';
+      let curSafeY = ySafe;
+      let curUnsafeY = yUnsafe;
+
+      // 1. Sewer safe -> Safe
+      const hsSafe = f.sewerSafe * scale;
+      const hsUntreat = f.sewerUntreated * scale;
+      const hsLeak = f.sewerLeaked * scale;
+      paths += ribbon(col1X + colW, ySewer, hsSafe, col3X, curSafeY, hsSafe, 'var(--positive)', 0.55);
+      curSafeY += hsSafe;
+      paths += ribbon(col1X + colW, ySewer + hsSafe, hsUntreat + hsLeak, col3X, curUnsafeY, hsUntreat + hsLeak, 'var(--error)', 0.55);
+      curUnsafeY += hsUntreat + hsLeak;
+
+      // 2. UBS safe & unsafe
+      const huSafe = (f.ubsOnsiteSafe + f.ubsFsmSafe) * scale;
+      const huUnsafe = f.ubsFsmUnsafe * scale;
+      paths += ribbon(col1X + colW, yUbs, huSafe, col3X, curSafeY, huSafe, 'var(--positive)', 0.65);
+      curSafeY += huSafe;
+      paths += ribbon(col1X + colW, yUbs + huSafe, huUnsafe, col3X, curUnsafeY, huUnsafe, 'var(--error)', 0.65);
+      curUnsafeY += huUnsafe;
+
+      // 3. Pit safe & unsafe
+      const hpSafe = f.pitSafe * scale;
+      const hpUnsafe = f.pitUnsafe * scale;
+      paths += ribbon(col1X + colW, yPit, hpSafe, col3X, curSafeY, hpSafe, 'var(--positive)', 0.45);
+      curSafeY += hpSafe;
+      paths += ribbon(col1X + colW, yPit + hpSafe, hpUnsafe, col3X, curUnsafeY, hpUnsafe, 'var(--error)', 0.45);
+      curUnsafeY += hpUnsafe;
+
+      // 4. Open discharge
+      paths += ribbon(col1X + colW, yOpen, hOpen, col3X, curUnsafeY, hOpen, 'var(--error)', 0.75);
+
+      function blockLabel(x, y, h, title, pct, bg, txt) {
+        if (h < 14) return `<rect x="${x}" y="${y}" width="${colW}" height="${Math.max(1, h)}" fill="${bg}"></rect>`;
+        return `<rect x="${x}" y="${y}" width="${colW}" height="${h}" fill="${bg}" stroke="var(--background)" stroke-width="1"></rect>
+          <text x="${x + 8}" y="${y + Math.min(h / 2 + 4, 18)}" font-family="var(--font-label)" font-size="10" font-weight="600" fill="${txt}">${title} (${pct.toFixed(0)}%)</text>`;
+      }
+
+      svg.innerHTML = `
+        <rect x="0" y="0" width="740" height="350" fill="var(--background)"></rect>
+        <text x="${col1X}" y="30" font-family="var(--font-label)" font-size="11" fill="var(--on-surface-variant)">1. CONTENCIÓN EN ORIGEN</text>
+        <text x="${col2X + 50}" y="30" text-anchor="middle" font-family="var(--font-label)" font-size="11" fill="var(--on-surface-variant)">2. CADENA TRANSPORTE / FSM</text>
+        <text x="${col3X}" y="30" font-family="var(--font-label)" font-size="11" fill="var(--on-surface-variant)">3. DESTINO FINAL (100%)</text>
+
+        ${paths}
+
+        <!-- Col 1 Nodes -->
+        ${blockLabel(col1X, ySewer, hSewer, 'Alcantarillado', d.sewer, 'var(--data-1)', 'var(--on-primary)')}
+        ${blockLabel(col1X, yUbs, hUbs, 'UBS Biodigestor', d.ubs, 'var(--data-3)', 'var(--on-primary)')}
+        ${blockLabel(col1X, yPit, hPit, 'Pozo Ciego', d.pit, 'var(--surface-container-high)', 'var(--on-surface)')}
+        ${blockLabel(col1X, yOpen, hOpen, 'Descarga Directa', d.open, 'var(--error)', 'var(--on-error)')}
+
+        <!-- Col 2 Mid Markers (Transparent reference pillars) -->
+        <rect x="${col2X + 40}" y="${topY}" width="18" height="${safeMidH}" fill="var(--positive)" fill-opacity="0.85"></rect>
+        <rect x="${col2X + 40}" y="${topY + safeMidH}" width="18" height="${unsafeMidH}" fill="var(--error)" fill-opacity="0.85"></rect>
+        <text x="${col2X + 49}" y="${topY + totalH + 18}" text-anchor="middle" font-family="var(--font-label)" font-size="10" fill="var(--on-surface-variant)">Red ${d.netEff}% · PTAR ${d.ptarEff}% · FSM ${d.fsmEff}%</text>
+
+        <!-- Col 3 Final Outcomes -->
+        <rect x="${col3X}" y="${ySafe}" width="190" height="${Math.max(1, hSafeTotal)}" fill="var(--positive)" stroke="var(--background)" stroke-width="1"></rect>
+        ${hSafeTotal >= 24 ? `<text x="${col3X + 10}" y="${ySafe + hSafeTotal / 2 + 4}" font-family="var(--font-label)" font-size="12" font-weight="600" fill="var(--on-primary)">GESTIÓN SEGURA: ${f.totalSafe.toFixed(1)}%</text>` : ''}
+
+        <rect x="${col3X}" y="${yUnsafe}" width="190" height="${Math.max(1, hUnsafeTotal)}" fill="var(--error)" stroke="var(--background)" stroke-width="1"></rect>
+        ${hUnsafeTotal >= 24 ? `<text x="${col3X + 10}" y="${yUnsafe + hUnsafeTotal / 2 + 4}" font-family="var(--font-label)" font-size="12" font-weight="600" fill="var(--on-error)">INSEGURO AL AMBIENTE: ${f.totalUnsafe.toFixed(1)}%</text>` : ''}
+      `;
+    }
+
+    /* =======================================================================
+       MODULE 3: BIM COORDINATION & BCF CLASH DETECTION
+       ======================================================================= */
+    function setBimFilter(key, val) {
+      if (key === 'sev') appState.bim.filterSev = val;
+      if (key === 'status') appState.bim.filterStatus = val;
+      renderBimModule();
+      scheduleSaveState();
+    }
+
+    function setBimViewMode(mode) {
+      appState.bim.viewMode = mode;
+      const isoBtn = document.getElementById('view-btn-iso');
+      const secBtn = document.getElementById('view-btn-sec');
+      if (isoBtn) isoBtn.classList.toggle('is-active', mode === 'iso');
+      if (secBtn) secBtn.classList.toggle('is-active', mode === 'sec');
+      renderBimSvg();
+      scheduleSaveState();
+    }
+
+    function selectClash(id) {
+      appState.bim.selectedId = id;
+      renderBimModule();
+      scheduleSaveState();
+    }
+
+    function resolveClashWithAi(id) {
+      const target = appState.bim.clashes.find(function (c) { return c.id === id; });
+      if (!target) return;
+      target.status = 'Resuelto';
+      target.dzCurrent = Math.max(target.dzRequired + 0.10, 0.30);
+      renderBimModule();
+      scheduleSaveState();
+      showFeedback(`Incidencia ${id} resuelta en modelo federado openBIM y actualizada a estado As-Built.`);
+    }
+
+    function updateClashStatus(id, newStatus) {
+      const target = appState.bim.clashes.find(function (c) { return c.id === id; });
+      if (!target) return;
+      target.status = newStatus;
+      renderBimModule();
+      scheduleSaveState();
+    }
+
+    function updateClashOwner(id, newOwner) {
+      const target = appState.bim.clashes.find(function (c) { return c.id === id; });
+      if (!target) return;
+      target.owner = newOwner;
+      renderBimModule();
+      scheduleSaveState();
+    }
+
+    function addNewBcfIssue() {
+      const titleEl = document.getElementById('new-bcf-title');
+      const sevEl = document.getElementById('new-bcf-sev');
+      const ownerEl = document.getElementById('new-bcf-owner');
+      const msgEl = document.getElementById('new-bcf-msg');
+
+      const title = titleEl ? titleEl.value.trim() : '';
+      if (title.length < 6) {
+        if (msgEl) msgEl.textContent = 'Ingresa una descripción técnica de al menos 6 caracteres para registrar la incidencia BCF.';
+        return;
+      }
+      if (msgEl) msgEl.textContent = '';
+
+      const nextNum = appState.bim.clashes.length + 1;
+      const newId = 'BCF-' + String(nextNum).padStart(3, '0');
+      const sev = sevEl ? sevEl.value : 'Alta';
+      const owner = ownerEl ? ownerEl.value : 'Coordinador BIM';
+
+      appState.bim.clashes.unshift({
+        id: newId,
+        title: title,
+        disciplines: 'Multidisciplinario',
+        type: 'Incidencia Campo / BIM',
+        severity: sev,
+        status: 'Abierto',
+        owner: owner,
+        loin: 'LOIN 300',
+        ifcGuid: '6S2Jv*x8B1Dj2RSia7JPSL',
+        dzCurrent: -0.08,
+        dzRequired: 0.25,
+        costImpact: 12000,
+        aiSolution: `Validar interferencia en modelo federado IFC y aplicar desplazamiento geométrico respetando resguardo mínimo de diseño.`,
+        xPos: 420,
+        yPos: 150
+      });
+      appState.bim.selectedId = newId;
+      if (titleEl) titleEl.value = '';
+      renderBimModule();
+      scheduleSaveState();
+      showFeedback(`Incidencia ${newId} creada y asignada a ${owner}.`);
+    }
+
+    function exportBcfLog() {
+      const headers = ['ID_BCF', 'Severidad', 'Estado', 'Especialidades', 'Responsable', 'LOIN', 'IFC_GUID', 'DeltaZ_m', 'Ahorro_Soles', 'Descripcion'];
+      const rows = appState.bim.clashes.map(function (c) {
+        return [
+          c.id, c.severity, c.status, c.disciplines, c.owner, c.loin, c.ifcGuid,
+          c.dzCurrent.toFixed(2), c.costImpact, '"' + c.title.replace(/"/g, '""') + '"'
+        ].join(',');
+      });
+      const csv = [headers.join(',')].concat(rows).join('\n');
+      try {
+        if (window.notebookAppApi && typeof window.notebookAppApi.triggerFileDownload === 'function') {
+          window.notebookAppApi.triggerFileDownload({
+            content: csv,
+            contentType: 'text/csv',
+            encoding: 'UTF-8',
+            filename: 'auditoria_bcf_saneamiento.csv'
+          });
+          showFeedback('Archivo CSV de incidencias BCF exportado.');
+          return;
+        }
+      } catch (err) {
+        // Fallback info
+      }
+      showFeedback('Registro BCF preparado (' + appState.bim.clashes.length + ' incidencias).');
+    }
+
+    function renderBimModule() {
+      const list = appState.bim.clashes;
+      const openCount = list.filter(function (c) { return c.status !== 'Resuelto'; }).length;
+      const critCount = list.filter(function (c) { return c.status !== 'Resuelto' && c.severity === 'Crítica'; }).length;
+      const resCount = list.filter(function (c) { return c.status === 'Resuelto'; }).length;
+      const savedCost = list.filter(function (c) { return c.status === 'Resuelto'; }).reduce(function (a, c) { return a + c.costImpact; }, 0);
+
+      const elOpen = document.getElementById('bim-kpi-open');
+      const elCrit = document.getElementById('bim-kpi-crit');
+      const elRes = document.getElementById('bim-kpi-res');
+      const elSave = document.getElementById('bim-kpi-save');
+      if (elOpen) elOpen.textContent = String(openCount);
+      if (elCrit) elCrit.textContent = String(critCount);
+      if (elRes) elRes.textContent = String(resCount);
+      if (elSave) elSave.textContent = 'S/ ' + savedCost.toLocaleString('es-PE');
+
+      const filtered = list.filter(function (c) {
+        const okSev = appState.bim.filterSev === 'all' || c.severity === appState.bim.filterSev;
+        const okSt = appState.bim.filterStatus === 'all' || c.status === appState.bim.filterStatus;
+        return okSev && okSt;
+      });
+
+      const tbody = document.getElementById('bim-table-body');
+      if (tbody) {
+        if (filtered.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="4" class="helper-text" style="padding:var(--space-md);">No hay incidencias que coincidan con los filtros seleccionados.</td></tr>`;
+        } else {
+          tbody.innerHTML = filtered.map(function (c) {
+            const sel = c.id === appState.bim.selectedId ? 'is-selected' : '';
+            const sevTag = c.severity === 'Crítica' ? 'tag-err' : (c.severity === 'Alta' ? 'tag-warn' : 'tag-neutral');
+            const stTag = c.status === 'Resuelto' ? 'tag-ok' : (c.status === 'En Revisión' ? 'tag-blue' : 'tag-err');
+            return `<tr class="clickable-row ${sel}" onclick="selectClash('${c.id}')">
+              <td class="mono-num" style="font-weight:600;">${c.id}</td>
+              <td>${c.disciplines}</td>
+              <td><span class="tag ${sevTag}">${c.severity}</span></td>
+              <td><span class="tag ${stTag}">${c.status}</span></td>
+            </tr>`;
+          }).join('');
+        }
+      }
+
+      // Render Detail Panel
+      const selected = list.find(function (c) { return c.id === appState.bim.selectedId; }) || list[0];
+      const detailEl = document.getElementById('bim-detail-panel');
+      if (detailEl && selected) {
+        const isResolved = selected.status === 'Resuelto';
+        const stTag = isResolved ? 'tag-ok' : (selected.status === 'En Revisión' ? 'tag-blue' : 'tag-err');
+        detailEl.innerHTML = `
+          <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:var(--space-sm);border-bottom:var(--rule);padding-bottom:var(--space-sm);">
+            <div>
+              <span class="label-mono">${selected.id} · ${selected.type} · ${selected.loin}</span>
+              <h3 class="subhead" style="margin-top:var(--space-xs);">${selected.title}</h3>
+            </div>
+            <span class="tag ${stTag}">${selected.status}</span>
+          </div>
+
+          <div class="kpi-grid">
+            <div class="kpi-tile">
+              <span class="label-mono">Resguardo ΔZ Actual</span>
+              <span class="mono-num" style="font-size:1.25rem;color:${selected.dzCurrent < selected.dzRequired ? 'var(--error)' : 'var(--positive)'};">${selected.dzCurrent >= 0 ? '+' : ''}${selected.dzCurrent.toFixed(2)} m</span>
+            </div>
+            <div class="kpi-tile">
+              <span class="label-mono">Mínimo Normativo</span>
+              <span class="mono-num" style="font-size:1.25rem;">+${selected.dzRequired.toFixed(2)} m</span>
+            </div>
+            <div class="kpi-tile">
+              <span class="label-mono">IFC GlobalId</span>
+              <span class="mono-num" style="font-size:0.75rem;word-break:break-all;">${selected.ifcGuid}</span>
+            </div>
+          </div>
+
+          <div class="notice ${isResolved ? 'is-ok' : 'is-warn'}">
+            <div class="notice-head">
+              <span class="notice-title">Resolución Geométrica Sugerida por IA</span>
+              <button type="button" class="btn btn-primary btn-compact" ${isResolved ? 'disabled' : ''} onclick="resolveClashWithAi('${selected.id}')">
+                ${isResolved ? 'Resuelto en Modelo' : 'Simular corrección BIM'}
+              </button>
+            </div>
+            <p class="helper-text" style="color:var(--on-surface);">${selected.aiSolution}</p>
+          </div>
+
+          <div class="form-row-2">
+            <div class="field-group">
+              <label class="field-label" for="detail-status-sel">Cambiar Estado BCF</label>
+              <select id="detail-status-sel" class="select-box" onchange="updateClashStatus('${selected.id}', this.value)">
+                <option value="Abierto" ${selected.status === 'Abierto' ? 'selected' : ''}>Abierto</option>
+                <option value="En Revisión" ${selected.status === 'En Revisión' ? 'selected' : ''}>En Revisión</option>
+                <option value="Resuelto" ${selected.status === 'Resuelto' ? 'selected' : ''}>Resuelto</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="detail-owner-sel">Responsable Asignado</label>
+              <select id="detail-owner-sel" class="select-box" onchange="updateClashOwner('${selected.id}', this.value)">
+                <option value="Esp. Hidráulica" ${selected.owner === 'Esp. Hidráulica' ? 'selected' : ''}>Esp. Hidráulica</option>
+                <option value="Coordinador BIM" ${selected.owner === 'Coordinador BIM' ? 'selected' : ''}>Coordinador BIM</option>
+                <option value="Esp. Estructuras" ${selected.owner === 'Esp. Estructuras' ? 'selected' : ''}>Esp. Estructuras</option>
+              </select>
+            </div>
+          </div>
+        `;
+      }
+
+      const isoBtn = document.getElementById('view-btn-iso');
+      const secBtn = document.getElementById('view-btn-sec');
+      if (isoBtn) isoBtn.classList.toggle('is-active', appState.bim.viewMode === 'iso');
+      if (secBtn) secBtn.classList.toggle('is-active', appState.bim.viewMode === 'sec');
+
+      renderBimSvg();
+    }
+
+    function renderBimSvg() {
+      const svg = document.getElementById('bim-svg');
+      if (!svg) return;
+      const list = appState.bim.clashes;
+      const selected = list.find(function (c) { return c.id === appState.bim.selectedId; }) || list[0];
+
+      if (appState.bim.viewMode === 'sec') {
+        // Vertical Trench Section Profile for Selected Clash
+        const isResolved = selected && selected.status === 'Resuelto';
+        const dz = selected ? selected.dzCurrent : -0.05;
+        const waterY = 125;
+        const sewerY = isResolved ? 210 : (dz <= 0 ? 132 : 175);
+        const drainY = 185;
+        const statusColor = isResolved ? 'var(--positive)' : 'var(--error)';
+
+        svg.innerHTML = `
+          <rect x="0" y="0" width="740" height="340" fill="var(--background)"></rect>
+          <!-- Ground surface -->
+          <rect x="40" y="65" width="660" height="240" fill="var(--surface-container)"></rect>
+          <line x1="40" y1="65" x2="700" y2="65" stroke="var(--on-surface)" stroke-width="2"></line>
+          <text x="54" y="54" font-family="var(--font-label)" font-size="11" fill="var(--on-surface-variant)">RASANTE DE PAVIMENTO · COTA 100.00 m</text>
+
+          <!-- Water Pipe (Longitudinal) -->
+          <line x1="70" y1="${waterY}" x2="670" y2="${waterY}" stroke="var(--data-1)" stroke-width="14"></line>
+          <text x="80" y="${waterY - 14}" font-family="var(--font-label)" font-size="11" fill="var(--data-1)">AGUA POTABLE (IFC_Water) · Z_clave = 98.90 m</text>
+
+          <!-- Sewer Pipe (Cross Section) -->
+          <circle cx="320" cy="${sewerY}" r="24" fill="var(--data-2)" stroke="var(--background)" stroke-width="2"></circle>
+          <text x="320" y="${sewerY + 40}" text-anchor="middle" font-family="var(--font-label)" font-size="10" fill="var(--data-2)">ALCANTARILLADO Ø250</text>
+
+          <!-- Drainage Channel -->
+          <rect x="470" y="${drainY - 22}" width="60" height="44" fill="var(--data-3)" fill-opacity="0.25" stroke="var(--data-3)" stroke-width="2"></rect>
+          <text x="500" y="${drainY + 38}" text-anchor="middle" font-family="var(--font-label)" font-size="10" fill="var(--data-3)">DRENAJE PLUVIAL</text>
+
+          <!-- Clash / Clearance Dimension -->
+          <line x1="365" y1="${waterY}" x2="365" y2="${sewerY}" stroke="${statusColor}" stroke-width="2"></line>
+          <circle cx="320" cy="${(waterY + sewerY) / 2}" r="18" fill="none" stroke="${statusColor}" stroke-width="2.5" stroke-dasharray="4 3"></circle>
+          <text x="380" y="${(waterY + sewerY) / 2 + 4}" font-family="var(--font-label)" font-size="12" font-weight="600" fill="${statusColor}">ΔZ = ${dz >= 0 ? '+' : ''}${dz.toFixed(2)} m (${isResolved ? 'RESUELTO' : 'CLASH'})</text>
+        `;
+        return;
+      }
+
+      // Isometric 3D Network Coordination View
+      const markers = list.map(function (c) {
+        const isSel = selected && c.id === selected.id;
+        const isRes = c.status === 'Resuelto';
+        const col = isRes ? 'var(--positive)' : 'var(--error)';
+        const r = isSel ? 13 : 9;
+        return `<g style="cursor:pointer;" onclick="selectClash('${c.id}')">
+          ${isSel ? `<circle cx="${c.xPos}" cy="${c.yPos}" r="22" fill="none" stroke="var(--primary)" stroke-width="2" stroke-dasharray="4 3"></circle>` : ''}
+          <circle cx="${c.xPos}" cy="${c.yPos}" r="${r}" fill="${col}" stroke="var(--background)" stroke-width="2"></circle>
+          <text x="${c.xPos}" y="${c.yPos - r - 6}" text-anchor="middle" font-family="var(--font-label)" font-size="10" font-weight="600" fill="var(--on-surface)">${c.id}</text>
+        </g>`;
+      }).join('');
+
+      svg.innerHTML = `
+        <rect x="0" y="0" width="740" height="340" fill="var(--background)"></rect>
+        <!-- Isometric Grid Plane -->
+        <polygon points="370,35 690,165 370,305 50,165" fill="var(--surface-container)" stroke="var(--outline-variant)" stroke-width="1.5"></polygon>
+        <line x1="210" y1="100" x2="530" y2="235" stroke="var(--outline-variant)" stroke-width="1" stroke-dasharray="3 3"></line>
+        <line x1="530" y1="100" x2="210" y2="235" stroke="var(--outline-variant)" stroke-width="1" stroke-dasharray="3 3"></line>
+
+        <!-- Structural Pad / PTAR Edge (for BCF-005) -->
+        <rect x="105" y="210" width="60" height="30" fill="var(--surface-container-high)" stroke="var(--on-surface-variant)" stroke-width="1.5"></rect>
+
+        <!-- Water Potable Pipe Line (Blue) -->
+        <polyline points="110,130 230,155 350,120 580,145" fill="none" stroke="var(--data-1)" stroke-width="6"></polyline>
+
+        <!-- Sanitary Sewer Network (Purple) -->
+        <polyline points="140,225 230,155 350,175 470,190 610,210" fill="none" stroke="var(--data-2)" stroke-width="8"></polyline>
+        <circle cx="350" cy="120" r="7" fill="var(--data-2)" stroke="var(--background)" stroke-width="1.5"></circle>
+
+        <!-- Storm Drainage Channel (Teal) -->
+        <polyline points="420,90 470,190 580,145 640,115" fill="none" stroke="var(--data-3)" stroke-width="9" stroke-opacity="0.85"></polyline>
+
+        <!-- Interactive Clash Markers -->
+        ${markers}
+
+        <text x="24" y="324" font-family="var(--font-label)" font-size="10" fill="var(--on-surface-variant)">FEDERACIÓN IFC: AGUA + ALCANTARILLADO + DRENAJE · CLIC EN NODO PARA INSPECCIONAR</text>
+      `;
+    }
+
+    /* =======================================================================
+       GLOBAL EXPORT
+       ======================================================================= */
+    function exportSessionReport() {
+      const wRes = computeWaterHydraulics(appState.water);
+      const sRes = computeSewerHydraulics(appState.sewer);
+      const fRes = computeSfdFlows(appState.sfd);
+      const openClashes = appState.bim.clashes.filter(function (c) { return c.status !== 'Resuelto'; }).length;
+
+      const txt = [
+        'REPORTE EJECUTIVO · IA Y BIM EN PROYECTOS DE AGUA Y SANEAMIENTO',
+        '================================================================',
+        '',
+        '1. VERIFICACION HIDRAULICA NORMATIVA (RNE PERU)',
+        `   [OS.050 Agua Potable] D=${appState.water.diam}mm, Q=${appState.water.q} L/s -> P_est=${wRes.pest.toFixed(2)} mca, P_din=${wRes.pdin.toFixed(2)} mca, v=${wRes.vel.toFixed(2)} m/s`,
+        `   [OS.070 Alcantarillado] D=${appState.sewer.diam}mm, S0=${appState.sewer.slope}‰, Q_tot=${sRes.qTotalLps.toFixed(1)} L/s -> v=${sRes.vel.toFixed(2)} m/s, d/D=${sRes.dd.toFixed(2)}, tau=${sRes.tau.toFixed(2)} Pa`,
+        '',
+        '2. DIAGNOSTICO SFD Y SANEAMIENTO INCLUSIVO (CWIS)',
+        `   Flujo Gestionado Seguro: ${fRes.totalSafe.toFixed(1)}% | Flujo Inseguro: ${fRes.totalUnsafe.toFixed(1)}%`,
+        `   Indice de Madurez CWIS: ${fRes.cwisIndex}/100 | Potencial Reuso Seguro: ${fRes.reusePotential.toFixed(1)}%`,
+        '',
+        '3. AUDITORIA DE COORDINACION BIM E INTERFERENCIAS BCF',
+        `   Incidencias Totales: ${appState.bim.clashes.length} | Activas: ${openClashes} | Resueltas As-Built: ${appState.bim.clashes.length - openClashes}`
+      ].join('\n');
+
+      try {
+        if (window.notebookAppApi && typeof window.notebookAppApi.triggerFileDownload === 'function') {
+          window.notebookAppApi.triggerFileDownload({
+            content: txt,
+            contentType: 'text/plain',
+            encoding: 'UTF-8',
+            filename: 'resumen_ponencia_ia_bim_saneamiento.txt'
+          });
+          showFeedback('Resumen técnico de la demostración exportado (.txt).');
+          return;
+        }
+      } catch (err) {
+        // Fallback notice
+      }
+      showFeedback('Resumen generado: Pdin=' + wRes.pdin.toFixed(1) + ' mca · SFD Seguro=' + fRes.totalSafe.toFixed(1) + '%');
+    }
+
+    document.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+</html>
