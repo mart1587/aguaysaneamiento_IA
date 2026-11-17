@@ -1,0 +1,247 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>AquaBIM Lab</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: banco de trabajo de ingeniería — panel de datos a la izquierda, resultados verificados a la derecha; cada bloque es una "lámina" del expediente */
+:root{
+  --bg:#F3F6F8; --panel:#FFFFFF; --ink:#0E2433; --muted:#566B7A; --line:#D5DFE6;
+  --water:#0F7C95; --water-soft:#DCEFF3; --amber:#C46A12; --amber-soft:#FBEBD9;
+  --ok:#1E7A4C; --ok-soft:#DDF1E6; --bad:#B42318; --bad-soft:#FBE3E0;
+  --display:'Archivo','Arial Narrow',Arial,sans-serif; --body:'IBM Plex Sans',system-ui,Arial,sans-serif; --mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0B1A24; --panel:#112532; --ink:#E6EEF2; --muted:#93A8B5; --line:#24404F;
+  --water:#4CC3D9; --water-soft:#123A47; --amber:#F0A24A; --amber-soft:#3A2A16;
+  --ok:#58C98C; --ok-soft:#163626; --bad:#F2796C; --bad-soft:#3E1C19; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0B1A24; --panel:#112532; --ink:#E6EEF2; --muted:#93A8B5; --line:#24404F;
+  --water:#4CC3D9; --water-soft:#123A47; --amber:#F0A24A; --amber-soft:#3A2A16;
+  --ok:#58C98C; --ok-soft:#163626; --bad:#F2796C; --bad-soft:#3E1C19; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 40px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:14px}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,4vw,44px);letter-spacing:-.01em;margin:0;line-height:1}
+h1 span{color:var(--water)}
+.sub{color:var(--muted);margin:6px 0 0;max-width:60ch}
+.tag{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.grid{display:grid;grid-template-columns:340px minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.card h2{font-family:var(--display);font-size:20px;margin:0;font-weight:700}
+.card h2 small{font-family:var(--mono);font-size:11px;font-weight:400;color:var(--muted);letter-spacing:.05em;display:block;text-transform:uppercase}
+.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{flex:1;font:inherit;font-weight:600;padding:8px;border:0;background:transparent;color:var(--muted);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--water);color:#fff}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--muted)}
+.field label b{font-family:var(--mono);color:var(--ink);font-weight:500}
+input[type=range]{width:100%;accent-color:var(--water)}
+select{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--ink)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.right{display:flex;flex-direction:column;gap:20px;min-width:0}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:2px}
+.kpi .v{font-family:var(--display);font-size:30px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
+.kpi .u{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.kpi .l{font-size:13px;color:var(--muted)}
+.kpi.hl .v{color:var(--water)}
+.row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+@media (max-width:760px){.row2{grid-template-columns:minmax(0,1fr)}}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:4px 10px;border-radius:999px}
+.chip.ok{background:var(--ok-soft);color:var(--ok)} .chip.bad{background:var(--bad-soft);color:var(--bad)} .chip.warn{background:var(--amber-soft);color:var(--amber)}
+.chip::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+td,th{padding:6px 4px;border-bottom:1px solid var(--line);text-align:left}
+td:last-child,th:last-child{text-align:right;font-family:var(--mono)}
+.svgbox{overflow-x:auto} svg{display:block;max-width:100%;height:auto}
+.note{font-size:12px;color:var(--muted)}
+.copy{align-self:flex-start;font:inherit;font-weight:600;padding:9px 14px;border-radius:8px;border:1px solid var(--water);background:var(--water-soft);color:var(--ink);cursor:pointer}
+pre{font-family:var(--mono);font-size:12.5px;white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px;margin:0;max-height:240px;overflow:auto}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+[hidden]{display:none!important}
+</style>
+
+<div class="wrap">
+<header>
+  <div>
+    <div class="tag">Laboratorio de diseño · RNE y R.M. 192-2018-VIVIENDA</div>
+    <h1>Aqua<span>BIM</span> Lab</h1>
+    <p class="sub">Cambia un dato y mira cómo responde todo el sistema: demanda, fuente, conducción, presiones y el reservorio como objeto BIM. Ejemplo cargado: Centro Poblado Modelo, Áncash (datos didácticos).</p>
+  </div>
+  <div class="seg" role="group" aria-label="Ámbito" style="min-width:220px">
+    <button id="bRural" aria-pressed="true">Rural</button><button id="bUrb" aria-pressed="false">Urbano</button>
+  </div>
+</header>
+
+<div class="grid">
+  <section class="card" aria-label="Datos de entrada">
+    <h2><small>01 · Datos</small>Datos de campo</h2>
+    <div class="field"><label for="pop">Población actual <b id="popV"></b></label><input id="pop" type="range" min="100" max="15000" step="1" value="486"></div>
+    <div class="field"><label for="tasa">Tasa de crecimiento anual <b id="tasaV"></b></label><input id="tasa" type="range" min="0" max="3" step="0.1" value="0.6"></div>
+    <div class="field" id="fRegion"><label for="region">Región natural</label>
+      <select id="region"><option value="costa">Costa</option><option value="sierra" selected>Sierra</option><option value="selva">Selva</option></select></div>
+    <div class="field" id="fUbs"><label for="ubs">Viviendas con UBS de arrastre hidráulico <b id="ubsV"></b></label><input id="ubs" type="range" min="0" max="100" step="5" value="80"></div>
+    <div class="field" id="fAlu"><label for="alu">Alumnos (inicial y primaria) <b id="aluV"></b></label><input id="alu" type="range" min="0" max="400" step="2" value="92"></div>
+    <div class="field" id="fDot" hidden><label for="dot">Dotación urbana (OS.100) <b id="dotV"></b></label><input id="dot" type="range" min="120" max="250" step="5" value="180"></div>
+    <div class="field"><label for="fuente">Caudal mínimo de la fuente (estiaje) <b id="fuenteV"></b></label><input id="fuente" type="range" min="0.2" max="30" step="0.05" value="1.25"></div>
+    <hr style="border:0;border-top:1px solid var(--line);width:100%">
+    <h2><small>02 · Línea de conducción</small>Captación → reservorio</h2>
+    <div class="field"><label for="lcl">Longitud <b id="lclV"></b></label><input id="lcl" type="range" min="50" max="5000" step="10" value="300"></div>
+    <div class="field"><label for="lch">Desnivel disponible <b id="lchV"></b></label><input id="lch" type="range" min="2" max="150" step="1" value="46"></div>
+    <div class="field"><label for="dia">Diámetro PVC</label>
+      <select id="dia"></select></div>
+    <hr style="border:0;border-top:1px solid var(--line);width:100%">
+    <h2><small>03 · Red</small>Reservorio → vivienda más baja</h2>
+    <div class="field"><label for="des">Desnivel en la red <b id="desV"></b></label><input id="des" type="range" min="10" max="300" step="1" value="107"></div>
+  </section>
+
+  <div class="right">
+    <div class="kpis" aria-live="polite">
+      <div class="kpi"><span class="l">Población de diseño (20 años)</span><span class="v" id="kPf"></span><span class="u">habitantes</span></div>
+      <div class="kpi"><span class="l">Caudal promedio Qp</span><span class="v" id="kQp"></span><span class="u">L/s</span></div>
+      <div class="kpi hl"><span class="l">Máximo diario Qmd</span><span class="v" id="kQmd"></span><span class="u">L/s · captación y conducción</span></div>
+      <div class="kpi hl"><span class="l">Máximo horario Qmh</span><span class="v" id="kQmh"></span><span class="u">L/s · aducción y red</span></div>
+    </div>
+
+    <section class="card">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:center">
+        <h2><small>Verificación 1</small>¿La fuente alcanza durante 20 años?</h2><span id="cFuente" class="chip"></span>
+      </div>
+      <div class="svgbox"><svg id="chart" viewBox="0 0 760 240" role="img" aria-label="Qmd por año frente al caudal mínimo de la fuente"></svg></div>
+      <p class="note" id="nDem"></p>
+    </section>
+
+    <div class="row2">
+      <section class="card">
+        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:center">
+          <h2><small>Verificación 2</small>Conducción con Qmd</h2><span id="cCond" class="chip"></span>
+        </div>
+        <table>
+          <tr><td>Velocidad (admisible 0,6 a 3,0 m/s)</td><td id="tV"></td></tr>
+          <tr><td>Pérdida Hazen-Williams, C = 150</td><td id="tHf"></td></tr>
+          <tr><td>Presión al llegar al reservorio</td><td id="tP"></td></tr>
+        </table>
+        <p class="note">Prueba 2" en el ejemplo: la velocidad cae por debajo de 0,6 m/s y la línea se sedimenta.</p>
+      </section>
+      <section class="card">
+        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:center">
+          <h2><small>Verificación 3</small>Presión estática en la red</h2><span id="cRed" class="chip"></span>
+        </div>
+        <div class="svgbox"><svg id="perfil" viewBox="0 0 420 200" role="img" aria-label="Perfil de la red con zonas de presión"></svg></div>
+        <p class="note" id="nRed"></p>
+      </section>
+    </div>
+
+    <div class="row2">
+      <section class="card">
+        <h2><small>Objeto BIM</small>Reservorio apoyado</h2>
+        <div class="svgbox"><svg id="res" viewBox="0 0 320 210" role="img" aria-label="Reservorio dimensionado"></svg></div>
+        <table id="props"></table>
+        <p class="note">Altura útil fija de 1,80 m; muro de 0,20 m. Volumen adoptado redondeado a múltiplos de 5 m³.</p>
+      </section>
+      <section class="card">
+        <h2><small>Para la memoria de cálculo</small>Resumen verificable</h2>
+        <pre id="memo"></pre>
+        <button class="copy" id="copy">Copiar resumen</button>
+        <p class="note">Parámetros de referencia del RNE y la R.M. 192-2018-VIVIENDA con fines didácticos: verifica cada valor en la norma vigente antes de usarlo en un proyecto.</p>
+      </section>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const DIAM=[['1"',0.0294],['1 1/2"',0.0434],['2"',0.0542],['3"',0.0801],['110 mm',0.0994],['160 mm',0.1446],['200 mm',0.1810]];
+DIAM.forEach(([n,d],i)=>{const o=document.createElement('option');o.value=i;o.textContent=n+'  (Di '+(d*1000).toFixed(1)+' mm)';$('dia').appendChild(o)});
+$('dia').value=0;
+const DOT={costa:[60,90],sierra:[50,80],selva:[70,100]};
+let amb='rural';
+const fmt=(x,d=2)=>{const s=Math.abs(x).toFixed(d).split('.');s[0]=s[0].replace(/\B(?=(\d{3})+(?!\d))/g,' ');return (x<0?'−':'')+s.join(',')};
+const fint=x=>fmt(x,0);
+function setAmb(a){amb=a;$('bRural').setAttribute('aria-pressed',a==='rural');$('bUrb').setAttribute('aria-pressed',a==='urbano');
+  ['fRegion','fUbs','fAlu'].forEach(id=>$(id).hidden=a!=='rural');$('fDot').hidden=a==='rural';
+  if(a==='urbano'&&+$('pop').value<2001){$('pop').value=2400;$('tasa').value=1.5;$('fuente').value=12;$('dia').value=4;$('lcl').value=1200;$('lch').value=40;$('des').value=60}
+  if(a==='rural'&&+$('pop').value>2000){$('pop').value=486;$('tasa').value=0.6;$('fuente').value=1.25;$('dia').value=0;$('lcl').value=300;$('lch').value=46;$('des').value=107}
+  calc()}
+$('bRural').onclick=()=>setAmb('rural');$('bUrb').onclick=()=>setAmb('urbano');
+function demand(t){
+  const Po=+$('pop').value,r=+$('tasa').value/100;
+  if(amb==='rural'){const P=Po*(1+r*t);const f=+$('ubs').value/100;const [s,c]=DOT[$('region').value];const dot=f*c+(1-f)*s;
+    return {P,dot,Qp:(P*dot+(+$('alu').value)*20)/86400}}
+  const P=Po*Math.pow(1+r,t);const dot=+$('dot').value;return {P,dot,Qp:P*dot/86400}}
+function chip(el,cls,txt){el.className='chip '+cls;el.textContent=txt}
+function calc(){
+  $('popV').textContent=fint(+$('pop').value)+' hab';$('tasaV').textContent=fmt(+$('tasa').value,1)+' %';
+  $('ubsV').textContent=$('ubs').value+' %';$('aluV').textContent=$('alu').value;$('dotV').textContent=$('dot').value+' L/hab/d';
+  $('fuenteV').textContent=fmt(+$('fuente').value)+' L/s';$('lclV').textContent=fint(+$('lcl').value)+' m';
+  $('lchV').textContent=$('lch').value+' m';$('desV').textContent=$('des').value+' m';
+  const K1=1.3,K2=2.0, d20=demand(20), Pf=Math.ceil(d20.P), Qp=d20.Qp, Qmd=K1*Qp, Qmh=K2*Qp, Qf=+$('fuente').value;
+  $('kPf').textContent=fint(Pf);$('kQp').textContent=fmt(Qp,3);$('kQmd').textContent=fmt(Qmd,3);$('kQmh').textContent=fmt(Qmh,3);
+  // chart
+  const W=760,H=240,L=56,R=20,T=16,B=36;const yrs=[...Array(21).keys()];const q=yrs.map(t=>K1*demand(t).Qp);
+  const raw=Math.max(Qf,...q)*1.2,st=[0.05,0.1,0.25,0.5,1,2,2.5,5,10].find(v=>raw/4<=v)||10,ymax=Math.ceil(raw/st)*st;const X=t=>L+(W-L-R)*t/20,Y=v=>T+(H-T-B)*(1-v/ymax);
+  const css=getComputedStyle(document.documentElement);const c=n=>css.getPropertyValue(n).trim();
+  let s='';for(let v=0;v<=ymax+1e-9;v+=st){s+=`<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="${c('--line')}"/><text x="${L-8}" y="${Y(v)+4}" text-anchor="end" font-size="12" fill="${c('--muted')}">${fmt(v,st<0.1?2:st<1?1:0)}</text>`}
+  [0,5,10,15,20].forEach(t=>s+=`<text x="${X(t)}" y="${H-12}" text-anchor="middle" font-size="12" fill="${c('--muted')}">año ${t}</text>`);
+  const pts=q.map((v,t)=>X(t)+','+Y(v)).join(' ');
+  s+=`<polygon points="${X(0)},${Y(0)} ${pts} ${X(20)},${Y(0)}" fill="${c('--water-soft')}"/><polyline points="${pts}" fill="none" stroke="${c('--water')}" stroke-width="3"/>`;
+  s+=`<line x1="${L}" x2="${W-R}" y1="${Y(Qf)}" y2="${Y(Qf)}" stroke="${c('--amber')}" stroke-width="3" stroke-dasharray="8 6"/>`;
+  s+=`<text x="${W-R}" y="${Y(Qf)-8}" text-anchor="end" font-size="13" font-weight="600" fill="${c('--amber')}">Fuente en estiaje ${fmt(Qf)} L/s</text>`;
+  s+=`<circle cx="${X(20)}" cy="${Y(Qmd)}" r="5" fill="${c('--water')}"/><text x="${X(20)-8}" y="${Y(Qmd)+20}" text-anchor="end" font-size="13" font-weight="600" fill="${c('--water')}">Qmd año 20: ${fmt(Qmd,3)} L/s</text>`;
+  $('chart').innerHTML=s;
+  const ok=Qf>=Qmd;chip($('cFuente'),ok?'ok':'bad',ok?'Cubre · margen '+fmt(Qf/Qmd,1)+' veces':'No cubre: cambia la concepción técnica');
+  $('nDem').textContent=amb==='rural'?`Rural: método aritmético, dotación ponderada ${fmt(d20.dot,0)} L/hab/d (${$('region').value}), 20 L/alumno/d, K1 = 1,3 y K2 = 2,0 (R.M. 192-2018-VIVIENDA).`:`Urbano: método geométrico, dotación ${$('dot').value} L/hab/d, K1 = 1,3 y K2 = 2,0 (OS.100). Con consumos medidos, la FTE urbana pide usarlos.`;
+  // conducción
+  const [dn,D]=DIAM[+$('dia').value], Q=Qmd/1000, V=Q/(Math.PI*D*D/4), hf=10.67*(+$('lcl').value)*Math.pow(Q,1.852)/(Math.pow(150,1.852)*Math.pow(D,4.87)), p=(+$('lch').value)-hf;
+  $('tV').textContent=fmt(V)+' m/s';$('tHf').textContent=fmt(hf)+' m';$('tP').textContent=fmt(p,1)+' m';
+  if(p<0)chip($('cCond'),'bad','Presión negativa: aumentar diámetro');else if(V<0.6)chip($('cCond'),'warn','Velocidad baja con '+dn);else if(V>3)chip($('cCond'),'bad','Velocidad excesiva');else chip($('cCond'),'ok','Cumple con '+dn);
+  // red
+  const lim=amb==='rural'?60:50, des=+$('des').value, n=Math.max(0,Math.ceil(des/lim)-1);
+  chip($('cRed'),n?'warn':'ok',n?n+(n>1?' cámaras rompe presión':' cámara rompe presión'):'Sin cámaras rompe presión');
+  $('nRed').textContent=`Presión estática máxima ${lim} m (${amb==='rural'?'R.M. 192-2018':'OS.050'}). Con ${n} ${n===1?'cámara':'cámaras'}, la red se divide en ${n+1} ${n?'zonas':'zona'} de unos ${fmt(des/(n+1),0)} m cada una.`;
+  let g='';const PL=20,PR=400,PT=24,PB=170;const zy=v=>PT+(PB-PT)*(v/des);
+  g+=`<polygon points="${PL},${PT} ${PR},${PB} ${PR},${PB+20} ${PL},${PB+20}" fill="${c('--line')}"/>`;
+  g+=`<line x1="${PL}" y1="${PT}" x2="${PR}" y2="${PB}" stroke="${c('--muted')}" stroke-width="2"/>`;
+  for(let k=0;k<=n;k++){const top=des*k/(n+1),bot=des*(k+1)/(n+1);const x0=PL+(PR-PL)*k/(n+1),x1=PL+(PR-PL)*(k+1)/(n+1);
+    g+=`<line x1="${x0}" y1="${zy(top)}" x2="${x1}" y2="${zy(top)}" stroke="${c('--water')}" stroke-width="3"/>`;
+    g+=`<polygon points="${x0},${zy(top)} ${x1},${zy(top)} ${x1},${zy(bot)}" fill="${c('--water-soft')}" opacity=".9"/>`;
+    if(k>0)g+=`<rect x="${x0-7}" y="${zy(top)-7}" width="14" height="14" fill="${c('--amber')}"/><text x="${x0}" y="${zy(top)-12}" text-anchor="middle" font-size="11" font-weight="700" fill="${c('--amber')}">CRP</text>`;}
+  g+=`<rect x="${PL-8}" y="${PT-14}" width="16" height="14" fill="${c('--water')}"/><text x="${PL+14}" y="${PT-3}" font-size="11" fill="${c('--muted')}">Reservorio</text><text x="${PR}" y="${PB+36}" text-anchor="end" font-size="11" fill="${c('--muted')}">Vivienda más baja</text>`;
+  $('perfil').setAttribute('viewBox','0 0 420 212');$('perfil').innerHTML=g;
+  // reservorio
+  let Vr=0.25*Qp*86.4; if(amb==='urbano'&&Pf>10000)Vr+=50; const Vad=Math.max(5,Math.ceil(Vr/5)*5);
+  const h=1.8, Di=Math.sqrt(4*Vad/(Math.PI*h)), ri=Di/2, re=ri+0.2;
+  const vMuro=Math.PI*(re*re-ri*ri)*2.1, vFondo=Math.PI*Math.pow(ri+0.4,2)*0.2, vTecho=Math.PI*Math.pow(ri+0.3,2)*0.15;
+  const sc=Math.min(26,110/re);const cx=160,base=170,rx=re*sc,ry=rx*0.32,hh=2.25*sc;
+  let r=`<ellipse cx="${cx}" cy="${base+6}" rx="${(ri+0.4)*sc}" ry="${(ri+0.4)*sc*0.32}" fill="${c('--line')}"/>`;
+  r+=`<path d="M${cx-rx},${base} L${cx-rx},${base-hh} A${rx},${ry} 0 0 0 ${cx+rx},${base-hh} L${cx+rx},${base} A${rx},${ry} 0 0 1 ${cx-rx},${base}Z" fill="${c('--panel')}" stroke="${c('--ink')}" stroke-width="1.5"/>`;
+  const wl=base-1.8*sc; r+=`<path d="M${cx-rx+3},${wl} A${rx-3},${ry-1} 0 0 0 ${cx+rx-3},${wl} L${cx+rx-3},${base-2} A${rx-3},${ry-1} 0 0 1 ${cx-rx+3},${base-2}Z" fill="${c('--water')}" opacity=".35"/>`;
+  r+=`<ellipse cx="${cx}" cy="${base-hh}" rx="${(ri+0.3)*sc}" ry="${(ri+0.3)*sc*0.32}" fill="${c('--water-soft')}" stroke="${c('--ink')}" stroke-width="1.5"/>`;
+  r+=`<line x1="${cx-ri*sc}" y1="${base-hh-ry-14}" x2="${cx+ri*sc}" y2="${base-hh-ry-14}" stroke="${c('--amber')}" stroke-width="2"/><text x="${cx}" y="${base-hh-ry-20}" text-anchor="middle" font-size="12" font-weight="600" fill="${c('--amber')}">Di ${fmt(Di)} m</text>`;
+  $('res').innerHTML=r;
+  $('props').innerHTML=`<tr><th>Propiedad</th><th>Valor</th></tr><tr><td>Volumen de regulación (25 % Qp)</td><td>${fmt(Vr,1)} m³</td></tr><tr><td>Volumen adoptado</td><td>${Vad} m³</td></tr><tr><td>Diámetro interior</td><td>${fmt(Di)} m</td></tr><tr><td>Concreto: muro + losas</td><td>${fmt(vMuro+vFondo+vTecho,2)} m³</td></tr>`;
+  // memo
+  $('memo').textContent=`SISTEMA DE AGUA POTABLE – ${amb.toUpperCase()}
+Población actual: ${fint(+$('pop').value)} hab; tasa ${fmt(+$('tasa').value,1)} %
+Población de diseño (20 años): ${fint(Pf)} hab
+Dotación: ${fmt(d20.dot,0)} L/hab/d
+Qp = ${fmt(Qp,3)} L/s | Qmd = ${fmt(Qmd,3)} L/s | Qmh = ${fmt(Qmh,3)} L/s
+Fuente en estiaje: ${fmt(Qf)} L/s -> ${ok?'cubre el Qmd':'NO cubre el Qmd'}
+Conducción PVC ${dn}: V = ${fmt(V)} m/s; hf = ${fmt(hf)} m; P llegada = ${fmt(p,1)} m
+Red: desnivel ${des} m; límite ${lim} m -> ${n} CRP
+Reservorio: Vreg = ${fmt(Vr,1)} m³; adoptado ${Vad} m³; Di = ${fmt(Di)} m
+Concreto estimado del reservorio: ${fmt(vMuro+vFondo+vTecho,2)} m³
+Verificar parámetros en la norma vigente.`;
+}
+document.querySelectorAll('input,select').forEach(e=>e.addEventListener('input',calc));
+$('copy').onclick=()=>{const t=$('memo').textContent;navigator.clipboard.writeText(t).then(()=>{$('copy').textContent='Copiado'},()=>{const sel=getSelection(),rg=document.createRange();rg.selectNodeContents($('memo'));sel.removeAllRanges();sel.addRange(rg);$('copy').textContent='Texto seleccionado: Ctrl+C'});setTimeout(()=>$('copy').textContent='Copiar resumen',2200)};
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',calc);
+new MutationObserver(calc).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+calc();
+</script>
+
+</body></html>
