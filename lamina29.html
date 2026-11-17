@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lámina 29 · La red del caso, simulada en EPANET</title>
+<style>
+html,body{margin:0;height:100%;background:#0B1F2A;overflow:hidden}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center center;background:#0B1F2A;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;color:#EEF4F3}
+.eyebrow{position:absolute;left:128px;top:128px;margin:0;font:600 24px/1.2 Consolas,"Courier New",monospace;letter-spacing:3px;text-transform:uppercase;color:#E8892B}
+h2{position:absolute;left:128px;top:178px;width:1664px;margin:0;font:700 64px/1.08 "Segoe UI","Helvetica Neue",Arial,sans-serif;letter-spacing:-.5px}
+iframe{position:absolute;left:128px;top:300px;width:1664px;height:620px;border:0;border-radius:12px;background:#071820}
+.pg{position:absolute;right:128px;bottom:64px;margin:0;font:24px Consolas,"Courier New",monospace;color:#9DB7BC}
+.hint{position:fixed;left:16px;bottom:12px;margin:0;font:14px Arial,sans-serif;color:#6F8C93;transition:opacity .6s}
+</style></head><body>
+<div id="stage">
+<p class="eyebrow">Animación 4 · La red simulada</p>
+<h2>La red del caso, simulada en EPANET</h2>
+<iframe id="anim" title="La red del caso, simulada en EPANET" srcdoc="&lt;!doctype html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;style&gt;html,body{margin:0;background:#071820;overflow:hidden}canvas{display:block}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;canvas id=&quot;c&quot; width=&quot;1664&quot; height=&quot;620&quot;&gt;&lt;/canvas&gt;
+&lt;script&gt;
+const c=document.getElementById(&#x27;c&#x27;),g=c.getContext(&#x27;2d&#x27;);
+const N={CAP:[920,40,null],C01:[844,95,14.9],C02:[758,145,33.8],C03:[690,180,36.0],RES:[682,200,null],
+J01:[639,300,30.2],J02:[379,316,36.7],J03:[163,339,49.9],J04:[920,316,33.7],J05:[1115,339,44.3],J06:[639,368,46.4],CRP:[639,402,null],
+J07:[639,440,8.8],J08:[390,448,12.9],J09:[174,479,27.4],J10:[899,455,12.1],J11:[1115,479,22.8],J12:[639,509,25.7],J13:[379,532,34.1],J14:[163,560,47.8],J15:[899,532,30.8],J16:[1115,560,42.0]};
+const L=[[&#x27;CAP&#x27;,&#x27;C01&#x27;],[&#x27;C01&#x27;,&#x27;C02&#x27;],[&#x27;C02&#x27;,&#x27;C03&#x27;],[&#x27;C03&#x27;,&#x27;RES&#x27;],[&#x27;RES&#x27;,&#x27;J01&#x27;],[&#x27;J01&#x27;,&#x27;J02&#x27;],[&#x27;J02&#x27;,&#x27;J03&#x27;],[&#x27;J01&#x27;,&#x27;J04&#x27;],[&#x27;J04&#x27;,&#x27;J05&#x27;],[&#x27;J01&#x27;,&#x27;J06&#x27;],[&#x27;J06&#x27;,&#x27;CRP&#x27;],[&#x27;CRP&#x27;,&#x27;J07&#x27;],[&#x27;J07&#x27;,&#x27;J08&#x27;],[&#x27;J08&#x27;,&#x27;J09&#x27;],[&#x27;J07&#x27;,&#x27;J10&#x27;],[&#x27;J10&#x27;,&#x27;J11&#x27;],[&#x27;J07&#x27;,&#x27;J12&#x27;],[&#x27;J12&#x27;,&#x27;J13&#x27;],[&#x27;J13&#x27;,&#x27;J14&#x27;],[&#x27;J12&#x27;,&#x27;J15&#x27;],[&#x27;J15&#x27;,&#x27;J16&#x27;]];
+const col=p=&gt;{const t=Math.min(1,p/60);const r=Math.round(127+(11-127)*t),gg=Math.round(211+(138-211)*t),b=Math.round(224+(161-224)*t);return `rgb(${r},${gg},${b})`};
+const F=&#x27;600 26px system-ui,Segoe UI,Arial,sans-serif&#x27;,F2=&#x27;400 24px system-ui,Segoe UI,Arial,sans-serif&#x27;;
+function frame(ms){const t=ms/1000;g.fillStyle=&#x27;#071820&#x27;;g.fillRect(0,0,1664,620);
+ L.forEach(([a,b],i)=&gt;{const A=N[a],B=N[b];g.strokeStyle=i&lt;4?&#x27;#2C6170&#x27;:&#x27;#24485A&#x27;;g.lineWidth=i&lt;5?8:6;g.beginPath();g.moveTo(A[0],A[1]);g.lineTo(B[0],B[1]);g.stroke();
+  for(let k=0;k&lt;3;k++){const f=((t*0.35+k/3+i*0.07)%1);g.beginPath();g.arc(A[0]+(B[0]-A[0])*f,A[1]+(B[1]-A[1])*f,4,0,7);g.fillStyle=&#x27;#BDEBF2&#x27;;g.fill()}});
+ Object.entries(N).forEach(([k,[x,y,p]])=&gt;{if(k===&#x27;CAP&#x27;){g.fillStyle=&#x27;#7FD3E0&#x27;;g.beginPath();g.moveTo(x,y-16);g.lineTo(x+16,y+12);g.lineTo(x-16,y+12);g.closePath();g.fill();return}
+  if(k===&#x27;RES&#x27;){g.fillStyle=&#x27;#0B8AA1&#x27;;g.fillRect(x-28,y-18,56,30);g.strokeStyle=&#x27;#EEF4F3&#x27;;g.lineWidth=2;g.strokeRect(x-28,y-18,56,30);return}
+  if(k===&#x27;CRP&#x27;){g.fillStyle=&#x27;#E8892B&#x27;;g.fillRect(x-16,y-16,32,32);return}
+  if(k[0]===&#x27;C&#x27;)return;
+  g.beginPath();g.arc(x,y,15,0,7);g.fillStyle=col(p);g.fill();g.strokeStyle=&#x27;#071820&#x27;;g.lineWidth=3;g.stroke()});
+ g.font=F;g.fillStyle=&#x27;#EEF4F3&#x27;;g.fillText(&#x27;Manantial&#x27;,950,48);g.fillText(&#x27;Reservorio 15 m³&#x27;,720,210);
+ g.fillStyle=&#x27;#E8892B&#x27;;g.fillText(&#x27;CRP tipo 7&#x27;,665,412);
+ g.font=F2;g.fillStyle=&#x27;#BDEBF2&#x27;;g.fillText(&#x27;J03 · 49,9 m&#x27;,90,305);g.fillText(&#x27;J07 · 8,8 m&#x27;,665,470);g.fillText(&#x27;J14 · 47,8 m&#x27;,90,600);
+ const x0=1240;g.fillStyle=&#x27;#0F2C38&#x27;;g.fillRect(x0,40,400,540);g.font=F;g.fillStyle=&#x27;#EEF4F3&#x27;;g.fillText(&#x27;Presión dinámica&#x27;,x0+28,92);
+ const gr=g.createLinearGradient(x0+28,0,x0+372,0);gr.addColorStop(0,col(0));gr.addColorStop(1,col(60));g.fillStyle=gr;g.fillRect(x0+28,112,344,24);
+ g.font=F2;g.fillStyle=&#x27;#9DB7BC&#x27;;g.fillText(&#x27;0 m&#x27;,x0+28,166);g.textAlign=&#x27;right&#x27;;g.fillText(&#x27;60 m&#x27;,x0+372,166);g.textAlign=&#x27;left&#x27;;
+ [[&#x27;Mínima&#x27;,&#x27;8,8 m ≥ 5 m&#x27;],[&#x27;Máxima&#x27;,&#x27;49,9 m&#x27;],[&#x27;Estática máx.&#x27;,&#x27;≈ 55 m ≤ 60 m&#x27;],[&#x27;Qmh total&#x27;,&#x27;0,98 L/s&#x27;]].forEach(([a,b],i)=&gt;{g.fillStyle=&#x27;#9DB7BC&#x27;;g.fillText(a,x0+28,226+i*86);g.font=F;g.fillStyle=&#x27;#EEF4F3&#x27;;g.fillText(b,x0+28,262+i*86);g.font=F2});
+ requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+<p class="pg">29</p>
+</div>
+<p class="hint" id="hint">F o doble clic: pantalla completa · R: reiniciar la animación</p>
+<script>
+const st=document.getElementById('stage');
+function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);st.style.transform='translate(-50%,-50%) scale('+s+')';}
+addEventListener('resize',fit);fit();
+function fs(){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();}
+addEventListener('keydown',e=>{if(e.key==='f'||e.key==='F')fs();if(e.key==='r'||e.key==='R'){const f=document.getElementById('anim');f.srcdoc=f.srcdoc;}});
+addEventListener('dblclick',fs);
+setTimeout(()=>document.getElementById('hint').style.opacity=0,4000);
+</script>
+</body></html>
