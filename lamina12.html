@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lámina 12 · El mismo reservorio de 15 m³, en cuatro pasos</title>
+<style>
+html,body{margin:0;height:100%;background:#0B1F2A;overflow:hidden}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center center;background:#0B1F2A;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;color:#EEF4F3}
+.eyebrow{position:absolute;left:128px;top:128px;margin:0;font:600 24px/1.2 Consolas,"Courier New",monospace;letter-spacing:3px;text-transform:uppercase;color:#E8892B}
+h2{position:absolute;left:128px;top:178px;width:1664px;margin:0;font:700 64px/1.08 "Segoe UI","Helvetica Neue",Arial,sans-serif;letter-spacing:-.5px}
+iframe{position:absolute;left:128px;top:300px;width:1664px;height:620px;border:0;border-radius:12px;background:#071820}
+.pg{position:absolute;right:128px;bottom:64px;margin:0;font:24px Consolas,"Courier New",monospace;color:#9DB7BC}
+.hint{position:fixed;left:16px;bottom:12px;margin:0;font:14px Arial,sans-serif;color:#6F8C93;transition:opacity .6s}
+</style></head><body>
+<div id="stage">
+<p class="eyebrow">Animación 1 · Del plano al modelo</p>
+<h2>El mismo reservorio de 15 m³, en cuatro pasos</h2>
+<iframe id="anim" title="El mismo reservorio de 15 m³, en cuatro pasos" srcdoc="&lt;!doctype html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;style&gt;html,body{margin:0;background:#071820;overflow:hidden}canvas{display:block}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;canvas id=&quot;c&quot; width=&quot;1664&quot; height=&quot;620&quot;&gt;&lt;/canvas&gt;
+&lt;script&gt;
+const c=document.getElementById(&#x27;c&#x27;),g=c.getContext(&#x27;2d&#x27;),W=1664,H=620,T=15,S=88;
+const F=&#x27;600 26px system-ui,Segoe UI,Arial,sans-serif&#x27;,F2=&#x27;400 24px system-ui,Segoe UI,Arial,sans-serif&#x27;;
+const ease=t=&gt;t&lt;0?0:t&gt;1?1:t*t*(3-2*t);
+function cyl(cx,cy,R,k,h,side,top,stroke){
+ g.beginPath();g.moveTo(cx-R,cy-h);g.ellipse(cx,cy-h,R,R*k,0,Math.PI,0,true);g.lineTo(cx+R,cy);g.ellipse(cx,cy,R,R*k,0,0,Math.PI,false);g.closePath();
+ g.fillStyle=side;g.fill();if(stroke){g.strokeStyle=stroke;g.lineWidth=2;g.stroke()}
+ g.beginPath();g.ellipse(cx,cy-h,R,R*k,0,0,Math.PI*2);g.fillStyle=top;g.fill();if(stroke){g.strokeStyle=stroke;g.stroke()}}
+function label(txt,sub,x,y,ax,ay,a){g.globalAlpha=a;g.strokeStyle=&#x27;#E8892B&#x27;;g.lineWidth=2;g.beginPath();g.moveTo(ax,ay);g.lineTo(x-12,y+20);g.stroke();
+ g.fillStyle=&#x27;#0F2C38&#x27;;g.fillRect(x-12,y-16,520,sub?84:52);g.fillStyle=&#x27;#E8892B&#x27;;g.fillRect(x-12,y-16,6,sub?84:52);
+ g.font=F;g.fillStyle=&#x27;#EEF4F3&#x27;;g.fillText(txt,x+8,y+18);if(sub){g.font=F2;g.fillStyle=&#x27;#9DB7BC&#x27;;g.fillText(sub,x+8,y+54)}g.globalAlpha=1}
+function step(n,t){g.font=&#x27;700 24px system-ui,Arial,sans-serif&#x27;;const L=[&#x27;1 · Plano DWG en 2D&#x27;,&#x27;2 · Extruido por niveles&#x27;,&#x27;3 · Elementos con propiedades&#x27;,&#x27;4 · Cantidades automáticas&#x27;];
+ for(let i=0;i&lt;4;i++){g.fillStyle=i===n?&#x27;#E8892B&#x27;:&#x27;#24485A&#x27;;g.fillRect(40+i*400,24,380,8);g.fillStyle=i===n?&#x27;#EEF4F3&#x27;:&#x27;#6F8C93&#x27;;g.fillText(L[i],40+i*400,70)}}
+function frame(ms){const t=(ms/1000)%T;g.clearRect(0,0,W,H);g.fillStyle=&#x27;#071820&#x27;;g.fillRect(0,0,W,H);
+ const cx=520;let n=t&lt;3.2?0:t&lt;6.4?1:t&lt;10.4?2:3;step(n,t);
+ const m=ease((t-3.2)/2.6),k=1-0.68*m,cy=330+150*m,hm=2.25*S*m;
+ const rIn=1.63*S,rOut=1.83*S,rF=2.03*S,rV=2.83*S,rT=1.93*S;
+ if(t&lt;3.2){const p=ease(t/2.6);g.lineWidth=3;
+  [[rV,&#x27;#4A6A72&#x27;],[rF,&#x27;#7FD3E0&#x27;],[rOut,&#x27;#7FD3E0&#x27;],[rIn,&#x27;#7FD3E0&#x27;]].forEach(([r,col],i)=&gt;{g.strokeStyle=col;g.beginPath();g.arc(cx,330,r,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.min(1,p*1.2-i*0.06));g.stroke()});
+  g.setLineDash([10,8]);g.strokeStyle=&#x27;#E8892B&#x27;;g.beginPath();g.moveTo(cx,330-rV-20);g.lineTo(cx,330+rV+20);g.stroke();g.setLineDash([]);
+  g.font=F2;g.fillStyle=&#x27;#9DB7BC&#x27;;g.fillText(&#x27;Capas: EST-MURO, EST-LOSA, ARQ-VEREDA&#x27;,cx+rV+40,330);g.fillText(&#x27;Di = 3,26 m · muro 0,20 m&#x27;,cx+rV+40,370)}
+ else{const sol=n&gt;=2;
+  cyl(cx,cy+0.2*S*m,rF,k,0.2*S*m,sol?&#x27;#5E6E73&#x27;:&#x27;#1E3A45&#x27;,sol?&#x27;#7B8D92&#x27;:&#x27;#1E3A45&#x27;,&#x27;#7FD3E0&#x27;);
+  cyl(cx,cy,rV,k,0.08*S*m,&#x27;#2C434B&#x27;,&#x27;#36525B&#x27;,null);
+  cyl(cx,cy,rF,k,0.02*S,&#x27;#5E6E73&#x27;,&#x27;#7B8D92&#x27;,null);
+  const wall=sol?&#x27;#C9B79C&#x27;:&#x27;#123542&#x27;,wallTop=sol?&#x27;#E2D3BA&#x27;:&#x27;#163E4C&#x27;;
+  cyl(cx,cy,rOut,k,hm*0.933,wall,wallTop,&#x27;#7FD3E0&#x27;);
+  g.beginPath();g.ellipse(cx,cy-hm*0.933,rIn,rIn*k,0,0,Math.PI*2);g.fillStyle=&#x27;#071820&#x27;;g.fill();
+  if(n===3){const w=ease((t-10.6)/2.2),wh=1.8*S*w;g.save();g.beginPath();g.ellipse(cx,cy-hm*0.933,rIn,rIn*k,0,0,Math.PI*2);g.clip();
+   g.fillStyle=&#x27;rgba(11,138,161,0.85)&#x27;;g.fillRect(cx-rIn,cy-wh,rIn*2,wh+rIn*k);g.restore();
+   g.beginPath();g.ellipse(cx,cy-wh,rIn,rIn*k,0,0,Math.PI*2);g.fillStyle=&#x27;rgba(127,211,224,0.9)&#x27;;g.fill()}
+  if(n&lt;3){g.globalAlpha=sol?0.95:0.5;g.beginPath();g.ellipse(cx,cy-hm,rT,rT*k,0,0,Math.PI*2);g.fillStyle=sol?&#x27;#0B8AA1&#x27;:&#x27;#163E4C&#x27;;g.fill();g.strokeStyle=&#x27;#7FD3E0&#x27;;g.lineWidth=2;g.stroke();g.globalAlpha=1}
+  if(n===1){g.font=F2;g.fillStyle=&#x27;#9DB7BC&#x27;;[[&#x27;Techo +2,25&#x27;,hm],[&#x27;Nivel de agua +1,80&#x27;,hm*0.8],[&#x27;Fondo ±0,00&#x27;,0]].forEach(([s,y])=&gt;{g.fillStyle=&#x27;#E8892B&#x27;;g.fillRect(cx+rV+30,cy-y-2,40,4);g.fillStyle=&#x27;#9DB7BC&#x27;;g.fillText(s,cx+rV+84,cy-y+8)})}
+  if(n===2){const a=i=&gt;ease((t-6.6-i*0.9)/0.6);
+   label(&#x27;Muro de concreto e = 0,20 m&#x27;,&#x27;Volumen 4,57 m³ · f’c 210 kg/cm²&#x27;,1000,170,cx+rOut,cy-hm*0.5,a(0));
+   label(&#x27;Losa de fondo e = 0,20 m&#x27;,&#x27;Volumen 2,59 m³&#x27;,1000,300,cx+rF*0.7,cy+0.1*S,a(1));
+   label(&#x27;Losa de techo e = 0,15 m&#x27;,&#x27;Volumen 1,76 m³&#x27;,1000,430,cx+rT*0.6,cy-hm,a(2))}
+  if(n===3){const rows=[[&#x27;Elemento&#x27;,&#x27;m³&#x27;],[&#x27;Muro&#x27;,&#x27;4,57&#x27;],[&#x27;Losa de fondo&#x27;,&#x27;2,59&#x27;],[&#x27;Losa de techo&#x27;,&#x27;1,76&#x27;],[&#x27;Concreto total&#x27;,&#x27;8,92&#x27;]];
+   g.fillStyle=&#x27;#0F2C38&#x27;;g.fillRect(1000,140,560,330);rows.forEach((r,i)=&gt;{const a=ease((t-10.8-i*0.4)/0.4);g.globalAlpha=a;
+    g.font=i===0||i===4?F:F2;g.fillStyle=i===4?&#x27;#E8892B&#x27;:&#x27;#EEF4F3&#x27;;g.fillText(r[0],1030,190+i*60);g.textAlign=&#x27;right&#x27;;g.fillText(r[1],1530,190+i*60);g.textAlign=&#x27;left&#x27;;
+    if(i&lt;4){g.fillStyle=&#x27;#24485A&#x27;;g.fillRect(1030,206+i*60,500,2)}g.globalAlpha=1});
+   g.font=F2;g.fillStyle=&#x27;#9DB7BC&#x27;;g.fillText(&#x27;Volumen útil: 15,0 m³ con 1,80 m de agua&#x27;,1000,520)}}
+ requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+<p class="pg">12</p>
+</div>
+<p class="hint" id="hint">F o doble clic: pantalla completa · R: reiniciar la animación</p>
+<script>
+const st=document.getElementById('stage');
+function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);st.style.transform='translate(-50%,-50%) scale('+s+')';}
+addEventListener('resize',fit);fit();
+function fs(){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();}
+addEventListener('keydown',e=>{if(e.key==='f'||e.key==='F')fs();if(e.key==='r'||e.key==='R'){const f=document.getElementById('anim');f.srcdoc=f.srcdoc;}});
+addEventListener('dblclick',fs);
+setTimeout(()=>document.getElementById('hint').style.opacity=0,4000);
+</script>
+</body></html>
