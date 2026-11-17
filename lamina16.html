@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lámina 16 · Detectar el choque en el modelo, no en la zanja</title>
+<style>
+html,body{margin:0;height:100%;background:#0B1F2A;overflow:hidden}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center center;background:#0B1F2A;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;color:#EEF4F3}
+.eyebrow{position:absolute;left:128px;top:128px;margin:0;font:600 24px/1.2 Consolas,"Courier New",monospace;letter-spacing:3px;text-transform:uppercase;color:#E8892B}
+h2{position:absolute;left:128px;top:178px;width:1664px;margin:0;font:700 64px/1.08 "Segoe UI","Helvetica Neue",Arial,sans-serif;letter-spacing:-.5px}
+iframe{position:absolute;left:128px;top:300px;width:1664px;height:620px;border:0;border-radius:12px;background:#071820}
+.pg{position:absolute;right:128px;bottom:64px;margin:0;font:24px Consolas,"Courier New",monospace;color:#9DB7BC}
+.hint{position:fixed;left:16px;bottom:12px;margin:0;font:14px Arial,sans-serif;color:#6F8C93;transition:opacity .6s}
+</style></head><body>
+<div id="stage">
+<p class="eyebrow">Animación 2 · Coordinación</p>
+<h2>Detectar el choque en el modelo, no en la zanja</h2>
+<iframe id="anim" title="Detectar el choque en el modelo, no en la zanja" srcdoc="&lt;!doctype html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;style&gt;html,body{margin:0;background:#071820;overflow:hidden}canvas{display:block}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;canvas id=&quot;c&quot; width=&quot;1664&quot; height=&quot;620&quot;&gt;&lt;/canvas&gt;
+&lt;script&gt;
+const c=document.getElementById(&#x27;c&#x27;),g=c.getContext(&#x27;2d&#x27;),W=1664,H=620,T=11;
+const F=&#x27;600 26px system-ui,Segoe UI,Arial,sans-serif&#x27;,F2=&#x27;400 24px system-ui,Segoe UI,Arial,sans-serif&#x27;;
+const ease=t=&gt;t&lt;0?0:t&gt;1?1:t*t*(3-2*t);
+const sy=x=&gt;420+50*(x-150)/1350, X=820, R=24, r=16, clave=sy(X)-R;
+function tag(x,y,t1,t2,col){g.fillStyle=&#x27;#0F2C38&#x27;;g.fillRect(x,y,600,92);g.fillStyle=col;g.fillRect(x,y,8,92);g.font=F;g.fillStyle=&#x27;#EEF4F3&#x27;;g.fillText(t1,x+24,y+38);g.font=F2;g.fillStyle=&#x27;#9DB7BC&#x27;;g.fillText(t2,x+24,y+74)}
+function frame(ms){const t=(ms/1000)%T;g.fillStyle=&#x27;#071820&#x27;;g.fillRect(0,0,W,H);
+ g.fillStyle=&#x27;#1A2E33&#x27;;g.fillRect(0,110,W,H-110);g.fillStyle=&#x27;#3B4A4E&#x27;;g.fillRect(0,96,W,16);
+ g.font=F2;g.fillStyle=&#x27;#9DB7BC&#x27;;g.fillText(&#x27;Corte por la calle · vista en elevación&#x27;,40,60);g.fillText(&#x27;Terreno&#x27;,40,150);
+ const p=ease(t/1.2);
+ g.save();g.beginPath();g.rect(0,0,150+1350*p,H);g.clip();
+ g.strokeStyle=&#x27;#B4621A&#x27;;g.lineWidth=R*2;g.lineCap=&#x27;round&#x27;;g.beginPath();g.moveTo(150,sy(150));g.lineTo(1500,sy(1500));g.stroke();
+ g.strokeStyle=&#x27;#E8892B&#x27;;g.lineWidth=6;g.beginPath();g.moveTo(150,sy(150)-R+5);g.lineTo(1500,sy(1500)-R+5);g.stroke();g.restore();
+ g.font=F;g.fillStyle=&#x27;#E8892B&#x27;;g.fillText(&#x27;Colector PVC DN160 · desagüe&#x27;,150,sy(150)+70);
+ const up=ease((t-5.2)/1.4), gap=0.05+0.30*up, cy=clave-r-gap*300;
+ if(t&gt;0.8){g.globalAlpha=ease((t-0.8)/0.6);g.beginPath();g.arc(X,cy,r,0,7);g.fillStyle=&#x27;#0B8AA1&#x27;;g.fill();g.strokeStyle=&#x27;#7FD3E0&#x27;;g.lineWidth=3;g.stroke();
+  g.font=F;g.fillStyle=&#x27;#7FD3E0&#x27;;g.fillText(&#x27;Tubería de agua 110 mm (cruce)&#x27;,X+40,cy-30);g.globalAlpha=1}
+ if(t&gt;1.6){g.strokeStyle=&#x27;#EEF4F3&#x27;;g.lineWidth=2;g.beginPath();g.moveTo(X-60,cy+r);g.lineTo(X-30,cy+r);g.moveTo(X-60,clave);g.lineTo(X-30,clave);g.moveTo(X-45,cy+r);g.lineTo(X-45,clave);g.stroke();
+  g.font=F;g.fillStyle=&#x27;#EEF4F3&#x27;;g.textAlign=&#x27;right&#x27;;g.fillText((gap).toFixed(2).replace(&#x27;.&#x27;,&#x27;,&#x27;)+&#x27; m&#x27;,X-72,(cy+r+clave)/2+9);g.textAlign=&#x27;left&#x27;}
+ if(t&gt;1.6&amp;&amp;t&lt;5.2){const a=0.45+0.35*Math.sin((t-1.6)*Math.PI*2/1.6);g.beginPath();g.arc(X,(cy+clave)/2+4,70,0,7);g.strokeStyle=&#x27;rgba(242,92,72,&#x27;+a+&#x27;)&#x27;;g.lineWidth=8;g.stroke();
+  tag(1000,150,&#x27;Interferencia: 0,05 m &lt; 0,25 m&#x27;,&#x27;Incidencia BCF #12 · abierta · responsable: agua&#x27;,&#x27;#F25C48&#x27;)}
+ if(t&gt;=5.2&amp;&amp;t&lt;6.8){tag(1000,150,&#x27;Corrección en el modelo de origen&#x27;,&#x27;Se sube la tubería de agua a 1,00 m&#x27;,&#x27;#E8892B&#x27;)}
+ if(t&gt;=6.8){g.beginPath();g.arc(X,(cy+clave)/2+4,80,0,7);g.strokeStyle=&#x27;#58C98C&#x27;;g.lineWidth=6;g.stroke();
+  tag(1000,150,&#x27;Resuelta: 0,35 m ≥ 0,25 m&#x27;,&#x27;Incidencia BCF #12 · cerrada&#x27;,&#x27;#58C98C&#x27;)}
+ requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+<p class="pg">16</p>
+</div>
+<p class="hint" id="hint">F o doble clic: pantalla completa · R: reiniciar la animación</p>
+<script>
+const st=document.getElementById('stage');
+function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);st.style.transform='translate(-50%,-50%) scale('+s+')';}
+addEventListener('resize',fit);fit();
+function fs(){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();}
+addEventListener('keydown',e=>{if(e.key==='f'||e.key==='F')fs();if(e.key==='r'||e.key==='R'){const f=document.getElementById('anim');f.srcdoc=f.srcdoc;}});
+addEventListener('dblclick',fs);
+setTimeout(()=>document.getElementById('hint').style.opacity=0,4000);
+</script>
+</body></html>
